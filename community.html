@@ -28,7 +28,8 @@
 
     <!-- Inline styles for action buttons and contact cards -->
     <style>
-        .action-container { display: flex; gap: 1rem; flex-wrap: wrap; margin: 2.5rem 0; justify-content: center; }
+        .action-container { display: flex; flex-direction: column; gap: 1rem; margin: 2.5rem auto; max-width: 600px; }
+        .action-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         .action-btn { 
             display: inline-block; 
             padding: 0.85rem 1.75rem; 
@@ -37,14 +38,18 @@
             font-weight: 600; 
             text-align: center;
             transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s;
-            background-color: var(--accent);
             color: #fff !important;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            flex: 1 1 auto;
+            min-width: 200px;
         }
         .action-btn:hover { opacity: 0.9; transform: translateY(-2px); text-decoration: none; box-shadow: 0 6px 8px -1px rgba(0,0,0,0.15); }
-        .action-btn-secondary { background-color: var(--text-muted); }
-        .action-btn-accent { background-color: #f59e0b; color: #fff !important; }
-        .action-btn-fb { background-color: #1877f2; color: #fff !important; }
+        
+        /* Unique Colors for Buttons */
+        .btn-city { background-color: var(--accent); } /* Default site accent color */
+        .btn-county { background-color: #64748b; } /* Deep slate gray */
+        .btn-petition { background-color: #f59e0b; } /* Orange/Amber */
+        .btn-fb { background-color: #1877f2; } /* Official Facebook Blue */
         
         .contact-role { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; display: block; margin-bottom: 0.25rem;}
         .contact-link { color: var(--accent); text-decoration: none; font-weight: 500; display: block; margin-top: 0.25rem; }
@@ -62,12 +67,18 @@
             The Siouxland deserves transparency. Here is how you can get involved and ensure our community's voice is heard.
         </p>
         
-        <!-- Unified Action Buttons -->
+        <!-- Step-by-Step Action Buttons -->
         <div class="action-container">
-            <a href="mailto:salixmayor@gmail.com,salixcouncil1@gmail.com,salixcouncil2@gmail.com,salixcouncil3@gmail.com,salixcouncil4@gmail.com,salixcouncil5@gmail.com?subject=Community%20Concerns%20Regarding%20Data%20Center%20Rezoning" class="action-btn" aria-label="Send an email to the entire Salix City Council">Email Salix Council</a>
-            <a href="mailto:mnelson@woodburycountyiowa.gov,dbittinger@woodburycountyiowa.gov,kentcarper55@gmail.com,ddietrich@wiatel.net,matthewung@woodburycountyiowa.gov?subject=Moratorium%20and%20Zoning%20Concerns%20-%20Salix%20Data%20Center" class="action-btn action-btn-secondary" aria-label="Send an email to the Woodbury County Supervisors">Email County Supervisors</a>
-            <a href="https://www.change.org/search?q=Salix%20data%20center" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-accent" aria-label="Sign the Change.org Petition against the data center">Sign the Petition</a>
-            <a href="https://www.facebook.com/groups/1555335752694832" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-fb" aria-label="Join the community Facebook group">Join Facebook Group</a>
+            <!-- Top Row: The Email Campaigns -->
+            <div class="action-row">
+                <a href="mailto:salixmayor@gmail.com,salixcouncil1@gmail.com,salixcouncil2@gmail.com,salixcouncil3@gmail.com,salixcouncil4@gmail.com,salixcouncil5@gmail.com?subject=Community%20Concerns%20Regarding%20Data%20Center%20Rezoning" class="action-btn btn-city" aria-label="Send an email to the entire Salix City Council">Email Salix Council</a>
+                <a href="mailto:mnelson@woodburycountyiowa.gov,dbittinger@woodburycountyiowa.gov,kentcarper55@gmail.com,ddietrich@wiatel.net,matthewung@woodburycountyiowa.gov?subject=Moratorium%20and%20Zoning%20Concerns%20-%20Salix%20Data%20Center" class="action-btn btn-county" aria-label="Send an email to the Woodbury County Supervisors">Email County Supervisors</a>
+            </div>
+            <!-- Bottom Row: Community Organizing -->
+            <div class="action-row">
+                <a href="https://www.change.org/search?q=Salix%20data%20center" target="_blank" rel="noopener noreferrer" class="action-btn btn-petition" aria-label="Sign the Change.org Petition against the data center">Sign the Petition</a>
+                <a href="https://www.facebook.com/groups/1555335752694832" target="_blank" rel="noopener noreferrer" class="action-btn btn-fb" aria-label="Join the community Facebook group">Join Facebook Group</a>
+            </div>
         </div>
 
         <hr>
