@@ -1,94 +1,83 @@
-/* CSS Variables for Light/Dark Mode */
+/* ==========================================
+   CSS Variables & WCAG 2.1 Theming
+   ========================================== */
 :root {
     --bg-color: #ffffff;
-    --text-color: #333333;
-    --btn-bg: #f0f0f0;
-    --btn-text: #333333;
-    --btn-border: #cccccc;
+    --text-color: #0f172a; /* Slate 900 for high contrast */
+    --text-muted: #475569; /* Slate 600 */
+    --card-bg: #f8fafc;
+    --border-color: #e2e8f0;
+    --accent: #2563eb; /* Accessible Blue */
+    --focus-ring: #3b82f6;
 }
 
 body.dark-mode {
-    --bg-color: #1a1a1a;
-    --text-color: #f4f4f4;
-    --btn-bg: #333333;
-    --btn-text: #ffffff;
-    --btn-border: #555555;
-}
-
-/* Base Styles */
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 16px;
-    transition: background-color 0.3s, color 0.3s, font-size 0.3s;
-    margin: 0;
-    padding: 2rem;
-}
-
-/* Floating Controls Container */
-.floating-controls {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    z-index: 1000;
-}
-
-/* Floating Buttons */
-.floating-controls button {
-    background-color: var(--btn-bg);
-    color: var(--btn-text);
-    border: 1px solid var(--btn-border);
-    padding: 12px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: 600;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, background-color 0.2s;
-}
-
-.floating-controls button:hover {
-    transform: translateY(-2px);
-}
-
-.floating-controls button.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #0056b3;
-}
-
-/* UPGRADED: 3.5-Second Cursor Dot Trailer */
-.cursor-dot {
-    position: fixed;
-    width: 8px; /* Made smaller */
-    height: 8px; /* Made smaller */
-    background-color: rgba(0, 123, 255, 0.8);
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.6); /* Added soft glow */
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    animation: fadeOutDot 3.5s ease-out forwards; /* Changed to 3.5s */
-    z-index: 9999;
-    will-change: transform, opacity; /* Hardware acceleration for performance */
-}
-
-/* UPGRADED: Uses a CSS variable for dynamic random starting sizes */
-@keyframes fadeOutDot {
-    0% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(var(--start-scale, 1));
-    }
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0);
-    }
+    --bg-color: #0f172a; /* Slate 900 */
+    --text-color: #f8fafc; /* Slate 50 */
+    --text-muted: #94a3b8; /* Slate 400 */
+    --card-bg: #1e293b; /* Slate 800 */
+    --border-color: #334155; /* Slate 700 */
+    --accent: #60a5fa; 
+    --focus-ring: #93c5fd;
 }
 
 /* ==========================================
-   Navigation Styles
+   Base & Typography (WCAG Compliant)
+   ========================================== */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px; /* Base scalable size */
+    line-height: 1.6; /* WCAG requires at least 1.5 */
+    transition: background-color 0.3s ease, color 0.3s ease, font-size 0.3s ease;
+    margin: 0;
+    padding: 0;
+}
+
+/* WCAG Focus States for Keyboard Navigation */
+*:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* Container limits width for readability (WCAG cognitive guidance) */
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+/* Headings */
+h1, h2, h3 {
+    line-height: 1.2;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: -0.025em;
+}
+
+p {
+    margin-bottom: 1.5rem;
+    color: var(--text-muted);
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 3rem 0;
+}
+
+/* ==========================================
+   Navigation
    ========================================== */
 .top-nav {
     display: flex;
@@ -96,17 +85,14 @@ body {
     align-items: center;
     padding: 1rem 2rem;
     background-color: var(--bg-color);
-    border-bottom: 1px solid var(--btn-border);
-    
-    /* Makes the nav stick to the top when scrolling */
+    border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
     z-index: 1000;
-    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .nav-brand {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-color);
 }
@@ -121,19 +107,116 @@ body {
 
 .nav-links a {
     text-decoration: none;
-    color: var(--text-color);
+    color: var(--text-muted);
     font-weight: 500;
-    transition: color 0.2s;
+    transition: color 0.2s ease;
 }
 
 .nav-links a:hover {
-    color: #007bff;
+    color: var(--accent);
 }
 
-/* Quick Fix: Ensure the body padding doesn't push the nav inward */
-body {
-    padding: 0; 
+/* ==========================================
+   Modern Components (Cards & Callouts)
+   ========================================== */
+.callout {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--accent);
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
-.content {
-    padding: 2rem; /* Moves the padding to your content container instead */
+
+.callout h2 {
+    margin-top: 0;
+    color: var(--text-color);
+    font-size: 1.5rem;
+}
+
+.callout p {
+    margin-bottom: 0;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+/* Modern Card Grid */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+/* ==========================================
+   Top Right Floating Controls (Like Video)
+   ========================================== */
+.floating-controls {
+    position: fixed;
+    top: 1rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: row; /* Horizontal */
+    gap: 0.5rem;
+    z-index: 1001; /* Above nav */
+}
+
+.floating-controls button {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Circle buttons */
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.floating-controls button:hover {
+    background-color: var(--card-bg);
+    transform: translateY(-2px);
+}
+
+.floating-controls button[aria-pressed="true"] {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    border-color: var(--text-color);
+}
+
+/* ==========================================
+   Cursor Dot Trailer
+   ========================================== */
+.cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    animation: fadeOutDot 3.5s ease-out forwards;
+    z-index: 9999;
+    will-change: transform, opacity;
+}
+
+@keyframes fadeOutDot {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(var(--start-scale, 1)); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
 }
