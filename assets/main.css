@@ -144,41 +144,6 @@ hr {
     padding: 0.5rem;
 }
 
-/* Mobile Nav Rules */
-@media (max-width: 768px) {
-    .mobile-menu-toggle {
-        display: block;
-    }
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: var(--bg-color);
-        padding: 0.5rem 0;
-        border-bottom: 1px solid var(--border-color);
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        gap: 0; 
-    }
-    .nav-links.active {
-        display: flex;
-    }
-    .nav-links li {
-        width: 100%;
-    }
-    .nav-links a {
-        display: block;
-        padding: 1rem 2rem;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    .nav-links a:hover {
-        background-color: var(--card-bg);
-    }
-}
-
 /* ==========================================
    Modern Components (Cards & Callouts)
    ========================================== */
@@ -295,10 +260,10 @@ hr {
 
 .hero-img {
     width: 100%;
-    max-height: 60vh; /* Increased slightly to fit both signs */
+    max-height: 60vh; 
     min-height: 350px;
     object-fit: cover; 
-    object-position: center bottom; /* Forces the browser to keep the bottom water sign visible */
+    object-position: center bottom; 
     cursor: zoom-in;
     margin: 1.5rem auto 0 auto; 
     border-radius: 8px;
@@ -312,8 +277,8 @@ hr {
 
 .hero-callout {
     position: relative;
-    margin-top: 2rem; /* Creates clean separation below the image */
-    width: 100%; /* Allows it to match the width of the text below */
+    margin-top: 2rem; 
+    width: 100%; 
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
@@ -379,4 +344,76 @@ hr {
     text-align: center;
     max-width: 800px;
     font-weight: 500;
+}
+
+/* ==========================================
+   Mobile & Tablet Optimizations
+   ========================================== */
+@media (max-width: 768px) {
+    /* Main container breathing room */
+    .content {
+        padding: 2rem 1.25rem;
+    }
+    
+    /* Scale down headers */
+    h1 {
+        font-size: 2rem;
+        margin-top: 1rem;
+    }
+
+    /* Fix the hero image crop for phones */
+    .hero-img {
+        min-height: auto; /* Removes the rigid desktop height */
+        aspect-ratio: 4 / 3; /* Forces a landscape rectangle regardless of screen width */
+        max-height: none;
+    }
+    
+    /* Adjust Callout Box */
+    .callout {
+        padding: 1.5rem 1rem;
+    }
+    .callout h2 {
+        font-size: 1.25rem;
+    }
+
+    /* Tucks the floating controls tighter into the corner */
+    .floating-controls {
+        bottom: 1rem;
+        right: 1rem;
+        transform: scale(0.9);
+        transform-origin: bottom right;
+    }
+
+    /* Mobile Nav Rules */
+    .mobile-menu-toggle {
+        display: block;
+    }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--bg-color);
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        gap: 0; 
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .nav-links li {
+        width: 100%;
+    }
+    .nav-links a {
+        display: block;
+        padding: 1rem 2rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .nav-links a:hover {
+        background-color: var(--card-bg);
+    }
 }
