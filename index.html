@@ -33,17 +33,21 @@
     <!-- Main content container uses semantic <main> tag for WCAG -->
     <main class="content">
         
-        <!-- Centered Hero Section -->
-        <h1>Salix, Iowa Data Center</h1>
+        <!-- Unified, Centered Hero Section -->
+        <div class="hero-container">
+            <h1>Salix, Iowa Data Center</h1>
 
-        <!-- Salix Community Sign -->
-        <img src="assets/images/salixsign02.jpg" alt="Welcome to Salix, Iowa community sign" class="responsive-img">
-        <p class="image-caption">Protecting the future and heritage of our Siouxland community.</p>
-        
-        <!-- Modern Callout Box -->
-        <div class="callout">
-            <h2>Salix Deserves Guarantees, Not Tacit Assurances</h2>
-            <p>The Siouxland deserves transparency, clean water, no noise, and fair benefits and wages.</p>
+            <!-- Salix Community Sign (Constrained & Clickable) -->
+            <img src="assets/images/salixsign02.jpg" alt="Welcome to Salix, Iowa and Water Supply Protection Area sign" class="responsive-img hero-img" onclick="openLightbox(this)">
+            
+            <!-- Modern Callout Box (Pulled up via CSS to overlap the image) -->
+            <div class="callout hero-callout">
+                <h2>Salix Deserves Guarantees, Not Tacit Assurances</h2>
+                <p>The Siouxland deserves transparency, clean water, no noise, and fair benefits and wages.</p>
+            </div>
+
+            <!-- Contextual Environmental Caption -->
+            <p class="image-caption" style="margin-bottom: 0;">The proposed 900-acre data center threatens to heavily drain the very same local water supply we are supposed to protect.</p>
         </div>
 
         <p style="text-align: center; max-width: 600px; margin: 0 auto 3rem auto;">
@@ -77,6 +81,23 @@
         <p>While some local leaders emphasize the necessity of opening conversations with potential developers to see what economic benefits might be brought to the community, Woodbury County has filed a legal challenge against the city's initial land annexation. No construction can move forward until the rezoning process is fully finalized.</p>
 
     </main>
+
+    <!-- Hidden Lightbox Modal -->
+    <div id="image-lightbox" class="lightbox" onclick="this.style.display='none'">
+        <span class="lightbox-close" aria-label="Close lightbox">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" alt="Enlarged view of the Salix community sign">
+        <div class="lightbox-caption">The proposed 900-acre data center threatens to heavily drain the very same local water supply we are supposed to protect.</div>
+    </div>
+
+    <!-- Script to trigger Lightbox -->
+    <script>
+        function openLightbox(imgElement) {
+            const lightbox = document.getElementById('image-lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightbox.style.display = "flex";
+            lightboxImg.src = imgElement.src;
+        }
+    </script>
 
     <script src="assets/components.js"></script>
 </body>
