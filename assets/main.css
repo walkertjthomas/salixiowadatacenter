@@ -86,3 +86,54 @@ body {
         transform: translate(-50%, -50%) scale(0);
     }
 }
+
+/* ==========================================
+   Navigation Styles
+   ========================================== */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--btn-border);
+    
+    /* Makes the nav stick to the top when scrolling */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: #007bff;
+}
+
+/* Quick Fix: Ensure the body padding doesn't push the nav inward */
+body {
+    padding: 0; 
+}
+.content {
+    padding: 2rem; /* Moves the padding to your content container instead */
+}
