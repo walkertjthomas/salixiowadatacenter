@@ -170,11 +170,12 @@
                 // 1. The Core Lock: Broaden the anchor to easily pull 10 articles 
                 let finalQuery = 'Salix "data center"';
 
-                // 2. The Addition: If the user typed something, inject an AND operator
+                // 2. The Addition: True Fuzzy Search Logic
                 if (userKeyword.trim() !== '') {
                     // Splits the user's words and joins them with ' OR ' so Google searches them individually
                     const fuzzyKeywords = userKeyword.trim().split(/\s+/).join(' OR ');
-                    finalQuery += ` AND (${fuzzyKeywords})`;
+                    // The space acts as an 'AND', meaning: Salix AND "data center" AND (Keyword1 OR Keyword2)
+                    finalQuery += ` (${fuzzyKeywords})`;
                 }
 
                 // Construct the Google News URL
@@ -189,6 +190,7 @@
                         // Clear the container
                         newsContainer.innerHTML = '';
                         
+                        // Because we fetch gracefully, a 500 error from a 0-result search drops into the else block perfectly
                         if (data.status === 'ok' && data.items && data.items.length > 0) {
                             
                             // Slice to explicitly ensure we only show a max of 10
