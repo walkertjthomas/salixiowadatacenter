@@ -145,7 +145,7 @@ hr {
 }
 
 /* ==========================================
-   Modern Components (Cards & Callouts)
+   Modern Components (Cards, Callouts & Actions)
    ========================================== */
 .callout {
     background-color: var(--card-bg);
@@ -184,6 +184,54 @@ hr {
     padding: 1.5rem;
     border-radius: 8px;
 }
+
+/* Action Buttons (Community Page) */
+.action-container { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 1rem; 
+    margin: 2.5rem auto; 
+    max-width: 600px; 
+}
+
+.action-row { 
+    display: flex; 
+    gap: 1rem; 
+    justify-content: center; 
+    flex-wrap: wrap; 
+}
+
+.action-btn { 
+    display: inline-block; 
+    padding: 0.85rem 1.75rem; 
+    border-radius: 6px; 
+    text-decoration: none; 
+    font-weight: 600; 
+    text-align: center;
+    transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s;
+    color: #fff !important;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    flex: 1 1 auto;
+    min-width: 200px;
+}
+
+.action-btn:hover { 
+    opacity: 0.9; 
+    transform: translateY(-2px); 
+    text-decoration: none; 
+    box-shadow: 0 6px 8px -1px rgba(0,0,0,0.15); 
+}
+
+/* Unique Colors for Buttons */
+.btn-city { background-color: var(--accent); } 
+.btn-county { background-color: #64748b; } 
+.btn-petition { background-color: #f59e0b; } 
+.btn-fb { background-color: #1877f2; } 
+
+/* Contact Cards Typography */
+.contact-role { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; display: block; margin-bottom: 0.25rem;}
+.contact-link { color: var(--accent); text-decoration: none; font-weight: 500; display: block; margin-top: 0.25rem; }
+.contact-link:hover { text-decoration: underline; }
 
 /* ==========================================
    Bottom Right Floating Controls
