@@ -222,8 +222,11 @@
             const query = 'Salix Iowa data center';
             const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;
             
-            // Using a raw open-source proxy to bypass CORS and avoid all free-tier API limits
-            const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+            // Primary Proxy: Unrestricted public proxy to bypass CORS and Google's IP blocks
+            const apiUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rssUrl)}`;
+            
+            // Backup Proxy: (Uncomment this line and delete the one above if Codetabs is ever slow)
+            // const apiUrl = `https://corsproxy.io/?url=${encodeURIComponent(rssUrl)}`;
             
             const newsContainer = document.getElementById('live-news-feed');
             const loadingText = document.getElementById('news-loading');
