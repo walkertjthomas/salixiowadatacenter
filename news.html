@@ -152,7 +152,6 @@
     <script src="assets/components.js"></script>
     
     <!-- Live Google News Fetch Script with Hidden Keyword Lock -->
-    <!-- Live Google News Fetch Script with Hidden Keyword Lock -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const newsContainer = document.getElementById('live-news-feed');
@@ -168,12 +167,14 @@
                 loadingText.textContent = 'Fetching the latest articles from Google News...';
                 newsContainer.appendChild(loadingText);
 
-                // 1. The Core Lock: Broad search for the topic (Removed strict quotes!)
-                let finalQuery = 'Salix Iowa data center';
+                // 1. The Core Lock: Broaden the anchor to easily pull 10 articles 
+                let finalQuery = 'Salix "data center"';
 
-                // 2. The Addition: If the user typed something, naturally append it with a space
+                // 2. The Addition: If the user typed something, inject an AND operator
                 if (userKeyword.trim() !== '') {
-                    finalQuery += ` ${userKeyword.trim()}`;
+                    // Splits the user's words and joins them with ' OR ' so Google searches them individually
+                    const fuzzyKeywords = userKeyword.trim().split(/\s+/).join(' OR ');
+                    finalQuery += ` AND (${fuzzyKeywords})`;
                 }
 
                 // Construct the Google News URL
