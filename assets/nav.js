@@ -2,7 +2,7 @@ class SiteNav extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <nav class="top-nav">
-                <div class="nav-brand">Salix Info</div>
+                <div class="nav-brand">Protect Salix</div>
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="information.html">Information</a></li>
