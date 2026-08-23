@@ -25,6 +25,14 @@
 
     <link rel="stylesheet" href="assets/main.css">
     <script src="assets/nav.js"></script>
+    
+    <!-- Inline styles to perfectly format the dynamic news cards -->
+    <style>
+        .news-date { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .news-link { color: var(--accent); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 1rem; }
+        .news-link:hover { text-decoration: underline; }
+        .loading-text { font-style: italic; color: var(--text-muted); }
+    </style>
 </head>
 <body>
     
@@ -36,7 +44,17 @@
         
         <hr>
 
-        <h2>August 2026 Updates</h2>
+        <h2>Live Community Coverage</h2>
+        <p style="margin-bottom: 1.5rem;"><em>Auto-updating live news coverage regarding the proposed Salix data center footprint.</em></p>
+        
+        <!-- Live News Container (Uses your existing CSS Grid!) -->
+        <div id="live-news-feed" class="card-grid">
+            <p class="loading-text" id="news-loading">Fetching the latest articles from Google News...</p>
+        </div>
+
+        <hr>
+
+        <h2>August 2026 Manual Timeline</h2>
         <p><strong>August 20:</strong> City Council votes 3-2 against a one-year moratorium on data center development, allowing the rezoning process to continue.</p>
         
         <h2>Ongoing Legal Challenges</h2>
@@ -45,5 +63,60 @@
     </div>
 
     <script src="assets/components.js"></script>
+    
+    <!-- Live Google News Fetch Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. The exact Google News Search Query
+            const query = 'Salix Iowa data center';
+            const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;
+            
+            // 2. The free RSS-to-JSON proxy to bypass CORS restrictions
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+            
+            const newsContainer = document.getElementById('live-news-feed');
+            const loadingText = document.getElementById('news-loading');
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok' && data.items.length > 0) {
+                        // Remove the loading text
+                        loadingText.style.display = 'none';
+                        
+                        // Grab the top 3 most recent articles
+                        const topArticles = data.items.slice(0, 3);
+                        
+                        topArticles.forEach(article => {
+                            // Clean up the publication date
+                            const pubDate = new Date(article.pubDate).toLocaleDateString('en-US', { 
+                                month: 'short', day: 'numeric', year: 'numeric' 
+                            });
+
+                            // Create the card element using your existing CSS classes
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            card.style.borderTop = '4px solid var(--accent)';
+                            
+                            // Inject the article data into the card
+                            card.innerHTML = `
+                                <span class="news-date">${pubDate}</span>
+                                <h3 style="margin-top: 0; font-size: 1.15rem; line-height: 1.4;">${article.title}</h3>
+                                <a href="${article.link}" target="_blank" rel="noopener noreferrer" class="news-link" aria-label="Read full article about ${article.title}">Read Full Article &rarr;</a>
+                            `;
+                            
+                            // Add the finished card to the page
+                            newsContainer.appendChild(card);
+                        });
+                    } else {
+                        loadingText.textContent = 'No recent news articles found matching this query.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching news:', error);
+                    loadingText.textContent = 'Unable to load live news at this time. Please check the manual timeline below.';
+                });
+        });
+    </script>
 </body>
 </html>
