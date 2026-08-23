@@ -77,7 +77,7 @@ hr {
 }
 
 /* ==========================================
-   Navigation
+   Navigation & Mobile Menu
    ========================================== */
 .top-nav {
     display: flex;
@@ -95,6 +95,25 @@ hr {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-color);
+    display: flex;
+    align-items: center;
+}
+
+/* Community Heart Animation */
+.nav-heart {
+    display: inline-block;
+    color: #ef4444; 
+    margin-left: 0.35rem;
+    font-size: 1.1rem;
+    animation: heartbeat 2.5s infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    10% { transform: scale(1.2); }
+    20% { transform: scale(1); }
+    30% { transform: scale(1.2); }
+    40% { transform: scale(1); }
 }
 
 .nav-links {
@@ -114,6 +133,50 @@ hr {
 
 .nav-links a:hover {
     color: var(--accent);
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+/* Mobile Nav Rules */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--bg-color);
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        gap: 0; 
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .nav-links li {
+        width: 100%;
+    }
+    .nav-links a {
+        display: block;
+        padding: 1rem 2rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .nav-links a:hover {
+        background-color: var(--card-bg);
+    }
 }
 
 /* ==========================================
@@ -143,7 +206,6 @@ hr {
     color: var(--text-muted);
 }
 
-/* Modern Card Grid */
 .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -159,9 +221,6 @@ hr {
 }
 
 /* ==========================================
-   Top Right Floating Controls (Like Video)
-   ========================================== */
-/* ==========================================
    Bottom Right Floating Controls
    ========================================== */
 .floating-controls {
@@ -169,7 +228,7 @@ hr {
     bottom: 2rem;
     right: 2rem;
     display: flex;
-    flex-direction: row; /* Keeps the neat horizontal pill layout */
+    flex-direction: row; 
     gap: 0.5rem;
     z-index: 1001; 
 }
@@ -180,7 +239,7 @@ hr {
     border: 1px solid var(--border-color);
     width: 40px;
     height: 40px;
-    border-radius: 50%; /* Circle buttons */
+    border-radius: 50%;
     cursor: pointer;
     font-weight: 600;
     font-size: 1rem;
@@ -225,21 +284,101 @@ hr {
 }
 
 /* ==========================================
-   Responsive Images & Captions
+   Hero Section Layout
    ========================================== */
-.responsive-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    display: block;
-    margin: 1.5rem auto 0.5rem auto;
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
+.hero-img {
+    width: 100%;
+    max-height: 45vh; /* Prevents the image from taking over the screen */
+    min-height: 250px;
+    object-fit: cover; /* Crops rather than squishes */
+    object-position: center 30%; /* Focuses framing on the signs */
+    cursor: zoom-in;
+    margin: 1.5rem auto 0 auto; 
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-img:hover {
+    box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+.hero-callout {
+    position: relative;
+    z-index: 2;
+    margin-top: -2.5rem; /* Pulls callout over the image bottom */
+    width: 90%;
+    max-width: 700px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* General Image Caption */
 .image-caption {
     font-size: 0.875rem;
     color: var(--text-muted);
     text-align: center;
     font-style: italic;
     margin-bottom: 2.5rem;
+    margin-top: 1rem;
+}
+
+/* ==========================================
+   Lightbox Modal Overlay
+   ========================================== */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem;
+    box-sizing: border-box;
+    cursor: zoom-out;
+    backdrop-filter: blur(4px);
+}
+
+.lightbox-content {
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    object-fit: contain;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #f8fafc;
+    font-size: 3rem;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.lightbox-close:hover {
+    color: #ef4444;
+}
+
+.lightbox-caption {
+    margin-top: 1rem;
+    color: #f8fafc;
+    font-size: 1.125rem;
+    text-align: center;
+    max-width: 800px;
+    font-weight: 500;
 }
