@@ -3,49 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- WCAG: Stronger meta description for screen readers/SEO -->
+    <meta name="description" content="Information and community advocacy regarding the proposed 900-acre Salix, Iowa Data Center project.">
     <title>Salix, Iowa Data Center Project</title>
     <link rel="stylesheet" href="assets/main.css">
-    
-    <!-- Load modular navigation -->
     <script src="assets/nav.js"></script>
 </head>
 <body>
     
-    <!-- Modular Navigation Component -->
     <site-nav></site-nav>
 
-    <div class="content">
+    <!-- Main content container uses semantic <main> tag for WCAG -->
+    <main class="content">
+        
+        <!-- Centered Hero Section -->
         <h1>Salix, Iowa Data Center</h1>
         
-        <!-- Tagline / Callout Box -->
-        <div style="background-color: rgba(0, 123, 255, 0.1); padding: 1.5rem; border-left: 5px solid #007bff; margin: 1.5rem 0; border-radius: 4px;">
-            <h2 style="margin-top: 0; color: #007bff; font-size: 1.75rem;">Salix Deserves Guarantees, Not Tacit Assurances</h2>
-            <p style="margin-bottom: 0; font-size: 1.2rem; font-weight: 500;">The Siouxland deserves transparency, clean water, no noise, and fair benefits and wages.</p>
+        <!-- Modern Callout Box -->
+        <div class="callout">
+            <h2>Salix Deserves Guarantees, Not Tacit Assurances</h2>
+            <p>The Siouxland deserves transparency, clean water, no noise, and fair benefits and wages.</p>
         </div>
 
-        <p>The Salix data center is a proposed technology infrastructure project slated for 900 acres of annexed farmland just south of Sioux City, Iowa. The development has become a focal point of community discussion regarding land use, resource allocation, and the local impact of the artificial intelligence boom.</p>
+        <p style="text-align: center; max-width: 600px; margin: 0 auto 3rem auto;">
+            The Salix data center is a proposed technology infrastructure project slated for 900 acres of annexed farmland just south of Sioux City, Iowa. The development has become a focal point of community discussion regarding land use, resource allocation, and the local impact of the artificial intelligence boom.
+        </p>
         
         <hr>
 
         <h2>Project Specifications</h2>
-        <ul>
-            <li><strong>Location:</strong> Salix, Iowa (Woodbury County).</li>
-            <li><strong>Footprint:</strong> 900 acres of annexed agricultural land.</li>
-            <li><strong>Key Partners:</strong> MidAmerican Energy and Google (identified as the potential customer).</li>
-            <li><strong>Current Phase:</strong> Land annexed; pending rezoning approval before construction can begin.</li>
-        </ul>
+        <!-- Modern Card Grid Layout -->
+        <div class="card-grid">
+            <div class="card">
+                <h3>📍 Location & Scale</h3>
+                <p>Located in Salix, Iowa (Woodbury County). The footprint covers <strong>900 acres</strong> of recently annexed agricultural land.</p>
+            </div>
+            <div class="card">
+                <h3>🤝 Key Partners</h3>
+                <p>Partners include MidAmerican Energy and Google, who has been identified as the potential primary customer.</p>
+            </div>
+            <div class="card">
+                <h3>🚧 Current Phase</h3>
+                <p>Land has been annexed, but development is pending a formal rezoning approval before any construction can begin.</p>
+            </div>
+        </div>
+
+        <hr>
 
         <h2>Recent Updates & Community Response</h2>
         <p>On August 20, 2026, the Salix City Council voted 3-2 against a proposed one-year moratorium on data center developments. Proponents of the moratorium requested a pause to thoroughly study the potential strain on electricity, water, and local infrastructure.</p> 
         
         <p>While some local leaders emphasize the necessity of opening conversations with potential developers to see what economic benefits might be brought to the community, Woodbury County has filed a legal challenge against the city's initial land annexation. No construction can move forward until the rezoning process is fully finalized.</p>
 
-        <!-- Dummy space to test scrolling and your floating controls -->
-        <p style="margin-top: 25vh; font-style: italic; opacity: 0.7;">Scroll down to test your custom cursor and floating controls...</p>
-        <div style="height: 50vh;"></div>
-    </div>
+    </main>
 
-    <!-- Load the floating components script -->
     <script src="assets/components.js"></script>
 </body>
 </html>
