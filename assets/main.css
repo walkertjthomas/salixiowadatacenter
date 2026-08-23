@@ -60,24 +60,26 @@ body {
     border-color: #0056b3;
 }
 
-/* New 5-Second Cursor Dot Trailer */
+/* UPGRADED: 3.5-Second Cursor Dot Trailer */
 .cursor-dot {
     position: fixed;
-    width: 12px;
-    height: 12px;
+    width: 8px; /* Made smaller */
+    height: 8px; /* Made smaller */
     background-color: rgba(0, 123, 255, 0.8);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.6); /* Added soft glow */
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    animation: fadeOutDot 5s ease-out forwards;
+    animation: fadeOutDot 3.5s ease-out forwards; /* Changed to 3.5s */
     z-index: 9999;
+    will-change: transform, opacity; /* Hardware acceleration for performance */
 }
 
-/* Controls the fade and shrink effect over 5 seconds */
+/* UPGRADED: Uses a CSS variable for dynamic random starting sizes */
 @keyframes fadeOutDot {
     0% {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
+        transform: translate(-50%, -50%) scale(var(--start-scale, 1));
     }
     100% {
         opacity: 0;
