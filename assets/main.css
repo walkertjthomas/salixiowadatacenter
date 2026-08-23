@@ -295,10 +295,10 @@ hr {
 
 .hero-img {
     width: 100%;
-    max-height: 45vh; /* Prevents the image from taking over the screen */
-    min-height: 250px;
-    object-fit: cover; /* Crops rather than squishes */
-    object-position: center 30%; /* Focuses framing on the signs */
+    max-height: 60vh; /* Increased slightly to fit both signs */
+    min-height: 350px;
+    object-fit: cover; 
+    object-position: center bottom; /* Forces the browser to keep the bottom water sign visible */
     cursor: zoom-in;
     margin: 1.5rem auto 0 auto; 
     border-radius: 8px;
