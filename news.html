@@ -26,92 +26,31 @@
     <link rel="stylesheet" href="assets/main.css">
     <script src="assets/nav.js"></script>
     
-    <!-- Inline styles to perfectly format the dynamic news cards, lists, and timeline -->
+    <!-- Inline styles to perfectly format the dynamic news cards, timeline, and search bar -->
     <style>
         .news-date { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         .news-link { color: var(--accent); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 1rem; }
         .news-link:hover { text-decoration: underline; }
         .loading-text { font-style: italic; color: var(--text-muted); }
 
-        /* News Controls (Dropdown) */
-        .news-controls { margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; background-color: var(--card-bg); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); }
-        .news-controls select { padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-color); color: var(--text-color); font-family: inherit; font-size: 0.95rem; cursor: pointer; font-weight: 500; }
-        .news-controls select:focus { outline: 2px solid var(--accent); border-color: transparent; }
-        
-        /* Compact List View Styles */
-        .news-list { display: flex; flex-direction: column; gap: 0; }
-        .news-list-item { display: flex; align-items: baseline; padding: 1rem 0; border-bottom: 1px solid var(--border-color); gap: 1rem; flex-wrap: wrap; }
-        .news-list-item:last-child { border-bottom: none; }
-        .news-list-item .news-date { margin: 0; min-width: 110px; flex-shrink: 0; }
-        .news-list-item h3 { margin: 0; font-size: 1.1rem; font-weight: 500; flex-grow: 1; min-width: 250px; }
-        .news-list-item .news-link { margin-top: 0; font-size: 0.9rem; white-space: nowrap; }
+        /* Search Bar Component */
+        .news-controls { margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; background-color: var(--card-bg); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); flex-wrap: wrap;}
+        .news-controls input[type="text"] { flex-grow: 1; padding: 0.65rem 1rem; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-color); color: var(--text-color); font-family: inherit; font-size: 0.95rem; min-width: 200px;}
+        .news-controls input[type="text"]:focus { outline: 2px solid var(--accent); border-color: transparent; }
+        .news-controls button { padding: 0.65rem 1.5rem; border-radius: 4px; border: none; background-color: var(--accent); color: white; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        .news-controls button:hover { opacity: 0.9; }
 
         /* ==========================================
            Vertical Timeline Component
            ========================================== */
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 2rem auto;
-            padding-left: 2rem;
-        }
-
-        /* The vertical connecting line */
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 8px; /* Centers the line under the dot */
-            height: 100%;
-            width: 4px;
-            background: var(--border-color);
-            border-radius: 2px;
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2.5rem;
-        }
-
-        /* The timeline dot */
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2rem; /* Pulls dot over the vertical line */
-            top: 6px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background-color: var(--bg-color);
-            border: 4px solid var(--accent);
-            z-index: 1;
-        }
-
-        .timeline-date {
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-
-        .timeline-content {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .timeline-content h3 {
-            margin-top: 0; 
-            color: var(--text-color);
-        }
-
-        .timeline-content p {
-            margin-bottom: 0;
-        }
+        .timeline { position: relative; max-width: 800px; margin: 2rem auto; padding-left: 2rem; }
+        .timeline::before { content: ''; position: absolute; top: 0; left: 8px; height: 100%; width: 4px; background: var(--border-color); border-radius: 2px; }
+        .timeline-item { position: relative; margin-bottom: 2.5rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -2rem; top: 6px; width: 16px; height: 16px; border-radius: 50%; background-color: var(--bg-color); border: 4px solid var(--accent); z-index: 1; }
+        .timeline-date { font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; font-size: 1.1rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        .timeline-content { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .timeline-content h3 { margin-top: 0; color: var(--text-color); }
+        .timeline-content p { margin-bottom: 0; }
     </style>
 </head>
 <body>
@@ -127,17 +66,14 @@
         <h2>Live Community Coverage</h2>
         <p style="margin-bottom: 1.5rem;"><em>Auto-updating live news coverage regarding the proposed Salix data center footprint.</em></p>
         
-        <!-- Controls for Display Mode -->
+        <!-- Contextual Search Box -->
         <div class="news-controls">
-            <label for="article-count" style="font-weight: 600; color: var(--text-color);">Display Format & Count: </label>
-            <select id="article-count" aria-label="Select number of articles to display">
-                <option value="8" selected>8 Articles (Grid Layout)</option>
-                <option value="24">24 Articles (List Layout)</option>
-                <option value="60">60 Articles (List Layout)</option>
-            </select>
+            <label for="news-search" style="font-weight: 600; color: var(--text-color);">Filter the latest coverage: </label>
+            <input type="text" id="news-search" placeholder="e.g. lawsuit, water, Google, moratorium..." aria-label="Filter news keywords">
+            <button id="search-btn">Filter News</button>
         </div>
 
-        <!-- Live News Container (Dynamically switches CSS classes based on selection) -->
+        <!-- Live News Container (Uses your existing CSS Grid!) -->
         <div id="live-news-feed" class="card-grid">
             <p class="loading-text" id="news-loading">Fetching the latest articles from Google News...</p>
         </div>
@@ -154,7 +90,7 @@
                 <div class="timeline-date">August 20, 2026</div>
                 <div class="timeline-content">
                     <h3>City Council Reverses Course on Moratorium</h3>
-                    <p>Amid high tension and a heavy police presence to maintain order, the Salix City Council votes 3-2 <strong>against</strong> enacting a one-year moratorium on data center developments[cite: 1]. Council Member Denise Burkhart changes her previous July vote in order to allow conversations with Google to continue. The failure of the moratorium allows the data center rezoning process to proceed.</p>
+                    <p>Amid high tension and a heavy police presence to maintain order, the Salix City Council votes 3-2 <strong>against</strong> enacting a one-year moratorium on data center developments. Council Member Denise Burkhart changes her previous July vote in order to allow conversations with Google to continue. The failure of the moratorium allows the data center rezoning process to proceed.</p>
                 </div>
             </div>
 
@@ -163,7 +99,7 @@
                 <div class="timeline-date">August 12, 2026</div>
                 <div class="timeline-content">
                     <h3>Threats Force Meeting Postponement</h3>
-                    <p>A highly anticipated City Council meeting to vote on finalized moratorium language is abruptly postponed. Mayor Kevin Nelson cites death and terroristic threats made against city officials on social media[cite: 1]. The Woodbury County Sheriff's Office launches an investigation[cite: 1].</p>
+                    <p>A highly anticipated City Council meeting to vote on finalized moratorium language is abruptly postponed. Mayor Kevin Nelson cites death and terroristic threats made against city officials on social media. The Woodbury County Sheriff's Office launches an investigation.</p>
                 </div>
             </div>
 
@@ -179,7 +115,7 @@
                 <div class="timeline-date">August 3, 2026</div>
                 <div class="timeline-content">
                     <h3>Google Identified as Potential Developer</h3>
-                    <p>MidAmerican Energy publicly identifies Google as the potential primary customer interested in the site[cite: 1]. Google confirms it has reached an agreement to investigate a potential Salix development, but notes no formal rezoning or development applications have been filed yet.</p>
+                    <p>MidAmerican Energy publicly identifies Google as the potential primary customer interested in the site. Google confirms it has reached an agreement to investigate a potential Salix development, but notes no formal rezoning or development applications have been filed yet.</p>
                 </div>
             </div>
 
@@ -188,7 +124,7 @@
                 <div class="timeline-date">July 8, 2026</div>
                 <div class="timeline-content">
                     <h3>Initial Moratorium Drafted</h3>
-                    <p>Facing growing community concerns over water, energy, and infrastructure strain, the Salix City Council votes 3-2 to draft a one-year moratorium on data center developments[cite: 1]. The city attorney is tasked with drafting the official language for a final August vote.</p>
+                    <p>Facing growing community concerns over water, energy, and infrastructure strain, the Salix City Council votes 3-2 to draft a one-year moratorium on data center developments. The city attorney is tasked with drafting the official language for a final August vote.</p>
                 </div>
             </div>
 
@@ -205,7 +141,7 @@
                 <div class="timeline-date">April 8, 2026</div>
                 <div class="timeline-content">
                     <h3>Salix Annexes 900 Acres</h3>
-                    <p>Following a March notice in the <em>Sergeant Bluff Advocate</em>, the Salix City Council unanimously approves a voluntary annexation petition, officially bringing roughly 900 acres of agricultural farmland into the city's jurisdiction[cite: 1].</p>
+                    <p>Following a March notice in the <em>Sergeant Bluff Advocate</em>, the Salix City Council unanimously approves a voluntary annexation petition, officially bringing roughly 900 acres of agricultural farmland into the city's jurisdiction.</p>
                 </div>
             </div>
             
@@ -215,102 +151,86 @@
 
     <script src="assets/components.js"></script>
     
-    <!-- Live Google News Fetch Script -->
-    <!-- Live Google News Fetch Script (Native XML Parsing) -->
+    <!-- Live Google News Fetch Script with Hidden Keyword Lock -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const query = 'Salix Iowa data center';
-            const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;
-            
-            // Primary Proxy: Unrestricted public proxy to bypass CORS and Google's IP blocks
-            const apiUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rssUrl)}`;
-            
-            // Backup Proxy: (Uncomment this line and delete the one above if Codetabs is ever slow)
-            // const apiUrl = `https://corsproxy.io/?url=${encodeURIComponent(rssUrl)}`;
-            
             const newsContainer = document.getElementById('live-news-feed');
             const loadingText = document.getElementById('news-loading');
-            const dropdown = document.getElementById('article-count');
-            
-            let allArticles = [];
+            const searchInput = document.getElementById('news-search');
+            const searchBtn = document.getElementById('search-btn');
 
-            // Main rendering logic
-            function renderArticles(limit) {
+            // The core function to fetch and render articles
+            function fetchNews(userKeyword = '') {
+                // Show loading state
                 newsContainer.innerHTML = '';
-                
-                if (limit <= 8) {
-                    newsContainer.className = 'card-grid'; 
-                } else {
-                    newsContainer.className = 'news-list'; 
+                loadingText.style.display = 'block';
+                loadingText.textContent = 'Fetching the latest articles from Google News...';
+                newsContainer.appendChild(loadingText);
+
+                // 1. The Core Lock: Always search for "Salix Iowa data center"
+                let finalQuery = '"Salix Iowa data center"';
+
+                // 2. The Addition: If the user typed something, append it with AND
+                if (userKeyword.trim() !== '') {
+                    finalQuery += ` AND ${userKeyword.trim()}`;
                 }
 
-                const articlesToDisplay = allArticles.slice(0, limit);
+                // Construct the Google News URL
+                const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(finalQuery)}&hl=en-US&gl=US&ceid=US:en`;
                 
-                if (articlesToDisplay.length === 0) {
-                    newsContainer.innerHTML = '<p class="loading-text">No recent news articles found matching this query.</p>';
-                    return;
-                }
+                // Use the stable rss2json proxy (automatically capped at 10 items)
+                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+                
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear the container
+                        newsContainer.innerHTML = '';
+                        
+                        if (data.status === 'ok' && data.items && data.items.length > 0) {
+                            
+                            // Slice to explicitly ensure we only show a max of 10
+                            const articlesToDisplay = data.items.slice(0, 10);
+                            
+                            articlesToDisplay.forEach(article => {
+                                const pubDate = new Date(article.pubDate).toLocaleDateString('en-US', { 
+                                    month: 'short', day: 'numeric', year: 'numeric' 
+                                });
 
-                articlesToDisplay.forEach(article => {
-                    const pubDate = new Date(article.pubDate).toLocaleDateString('en-US', { 
-                        month: 'short', day: 'numeric', year: 'numeric' 
+                                // Build the standard CSS card
+                                const card = document.createElement('div');
+                                card.className = 'card';
+                                card.style.borderTop = '4px solid var(--accent)';
+                                
+                                card.innerHTML = `
+                                    <span class="news-date">${pubDate}</span>
+                                    <h3 style="margin-top: 0; font-size: 1.15rem; line-height: 1.4;">${article.title}</h3>
+                                    <a href="${article.link}" target="_blank" rel="noopener noreferrer" class="news-link" aria-label="Read full article about ${article.title}">Read Full Article &rarr;</a>
+                                `;
+                                newsContainer.appendChild(card);
+                            });
+                        } else {
+                            newsContainer.innerHTML = `<p class="loading-text">No recent news articles found matching: <strong>${userKeyword || "general updates"}</strong>.</p>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching news:', error);
+                        newsContainer.innerHTML = '<p class="loading-text">Unable to load live news at this time. Please check the manual timeline below.</p>';
                     });
-
-                    if (limit <= 8) {
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        card.style.borderTop = '4px solid var(--accent)';
-                        
-                        card.innerHTML = `
-                            <span class="news-date">${pubDate}</span>
-                            <h3 style="margin-top: 0; font-size: 1.15rem; line-height: 1.4;">${article.title}</h3>
-                            <a href="${article.link}" target="_blank" rel="noopener noreferrer" class="news-link" aria-label="Read full article about ${article.title}">Read Full Article &rarr;</a>
-                        `;
-                        newsContainer.appendChild(card);
-                    } else {
-                        const listItem = document.createElement('div');
-                        listItem.className = 'news-list-item';
-                        
-                        listItem.innerHTML = `
-                            <span class="news-date">${pubDate}</span>
-                            <h3>${article.title}</h3>
-                            <a href="${article.link}" target="_blank" rel="noopener noreferrer" class="news-link" aria-label="Read full article about ${article.title}">Read Article &rarr;</a>
-                        `;
-                        newsContainer.appendChild(listItem);
-                    }
-                });
             }
 
-            // Fetch the raw XML and parse it natively in the browser
-            fetch(apiUrl)
-                .then(response => response.text())
-                .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
-                .then(data => {
-                    const items = data.querySelectorAll("item");
-                    
-                    if (items && items.length > 0) {
-                        // Map the XML nodes into our standard array format
-                        allArticles = Array.from(items).map(item => ({
-                            title: item.querySelector("title").textContent,
-                            link: item.querySelector("link").textContent,
-                            pubDate: item.querySelector("pubDate").textContent
-                        }));
-                        
-                        loadingText.style.display = 'none';
-                        renderArticles(parseInt(dropdown.value, 10));
-                    } else {
-                        loadingText.textContent = 'No recent news articles found matching this query.';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching news:', error);
-                    loadingText.textContent = 'Unable to load live news at this time. Please check the manual timeline below.';
-                });
+            // Execute the initial data fetch (with no extra keywords)
+            fetchNews();
 
-            // Listen for user changes to the dropdown
-            dropdown.addEventListener('change', (e) => {
-                if (allArticles.length > 0) {
-                    renderArticles(parseInt(e.target.value, 10));
+            // Listen for button clicks to trigger a new search
+            searchBtn.addEventListener('click', () => {
+                fetchNews(searchInput.value);
+            });
+
+            // Allow the user to just hit the "Enter" key inside the text box
+            searchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    fetchNews(searchInput.value);
                 }
             });
         });
