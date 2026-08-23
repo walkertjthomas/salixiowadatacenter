@@ -48,7 +48,7 @@
             <!-- Historic Image Card -->
             <div class="card" style="grid-column: 1 / -1; border-top: 4px solid #10b981;">
                 <h3>🌾 Preserving Salix's Agricultural Heritage</h3>
-                <img src="assets/images/historic00.jpg" alt="Historic postcard of Farmers Elevator, C. & N.W. Depot and Updike Elevator in Salix, Iowa" class="responsive-img">
+                <img src="assets/images/historic00.jpg" alt="Historic postcard of Farmers Elevator, C. & N.W. Depot and Updike Elevator in Salix, Iowa" class="responsive-img" style="cursor: zoom-in; transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.boxShadow='0 8px 15px -3px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.boxShadow='0 4px 6px -1px rgba(0, 0, 0, 0.1)';" onclick="openLightbox(this)">
                 <p class="image-caption">Farmers Elevator, C. & N. W. Depot, and Updike Elevator in Salix, Iowa.</p>
                 <p>Salix was platted around 1868 with the arrival of the railroad<sup>[a]</sup>. Our town's history is deeply rooted in the land. When a devastating fire swept through the business district in October 1892, these grain elevators were among the only structures left standing, serving as a testament to our agricultural backbone<sup>[a]</sup>. The proposed 900-acre industrial footprint threatens to pave over this rich farming heritage, trading generational farmland for massive corporate water and power consumption.</p>
             </div>
@@ -86,6 +86,34 @@
         </ul>
 
     </main>
+
+    <!-- Hidden Lightbox Modal -->
+    <div id="image-lightbox" class="lightbox" onclick="this.style.display='none'">
+        <span class="lightbox-close" aria-label="Close lightbox">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" alt="Enlarged view">
+        <div class="lightbox-caption" id="lightbox-caption-text"></div>
+    </div>
+
+    <!-- Script to trigger Lightbox dynamically -->
+    <script>
+        function openLightbox(imgElement) {
+            const lightbox = document.getElementById('image-lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption-text');
+            
+            lightbox.style.display = "flex";
+            lightboxImg.src = imgElement.src;
+            lightboxImg.alt = imgElement.alt;
+            
+            // Look for the caption paragraph directly underneath the clicked image
+            const captionElement = imgElement.nextElementSibling;
+            if (captionElement && captionElement.classList.contains('image-caption')) {
+                lightboxCaption.textContent = captionElement.textContent;
+            } else {
+                lightboxCaption.textContent = imgElement.alt; // Fallback to alt text if no caption exists
+            }
+        }
+    </script>
 
     <script src="assets/components.js"></script>
 </body>
