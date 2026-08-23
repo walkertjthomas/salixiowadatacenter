@@ -20,7 +20,7 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: system-ui, -apple-system, sans-serif;
-    font-size: 16px; /* Base size, controlled by JS */
+    font-size: 16px;
     transition: background-color 0.3s, color 0.3s, font-size 0.3s;
     margin: 0;
     padding: 2rem;
@@ -34,7 +34,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    z-index: 1000; /* Keeps it on top of other content */
+    z-index: 1000;
 }
 
 /* Floating Buttons */
@@ -60,18 +60,27 @@ body {
     border-color: #0056b3;
 }
 
-/* Cursor Trailer Element */
-.cursor-trailer {
+/* New 5-Second Cursor Dot Trailer */
+.cursor-dot {
     position: fixed;
-    width: 24px;
-    height: 24px;
-    background-color: rgba(0, 123, 255, 0.4);
-    border: 2px solid rgba(0, 123, 255, 0.8);
+    width: 12px;
+    height: 12px;
+    background-color: rgba(0, 123, 255, 0.8);
     border-radius: 50%;
-    pointer-events: none; /* Prevents the trailer from blocking clicks */
-    opacity: 0;
+    pointer-events: none;
     transform: translate(-50%, -50%);
-    /* The transition on top/left creates the "trailing" lag effect */
-    transition: opacity 0.3s, top 0.1s ease-out, left 0.1s ease-out; 
+    animation: fadeOutDot 5s ease-out forwards;
     z-index: 9999;
+}
+
+/* Controls the fade and shrink effect over 5 seconds */
+@keyframes fadeOutDot {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+    }
 }
