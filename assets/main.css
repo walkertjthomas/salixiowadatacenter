@@ -161,14 +161,17 @@ hr {
 /* ==========================================
    Top Right Floating Controls (Like Video)
    ========================================== */
+/* ==========================================
+   Bottom Right Floating Controls
+   ========================================== */
 .floating-controls {
     position: fixed;
-    top: 1rem;
+    bottom: 2rem;
     right: 2rem;
     display: flex;
-    flex-direction: row; /* Horizontal */
+    flex-direction: row; /* Keeps the neat horizontal pill layout */
     gap: 0.5rem;
-    z-index: 1001; /* Above nav */
+    z-index: 1001; 
 }
 
 .floating-controls button {
