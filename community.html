@@ -25,37 +25,155 @@
 
     <link rel="stylesheet" href="assets/main.css">
     <script src="assets/nav.js"></script>
+
+    <!-- Inline styles for action buttons and contact cards -->
+    <style>
+        .action-container { display: flex; gap: 1rem; flex-wrap: wrap; margin: 2.5rem 0; justify-content: center; }
+        .action-btn { 
+            display: inline-block; 
+            padding: 0.85rem 1.75rem; 
+            border-radius: 6px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            text-align: center;
+            transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s;
+            background-color: var(--accent);
+            color: #fff !important;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .action-btn:hover { opacity: 0.9; transform: translateY(-2px); text-decoration: none; box-shadow: 0 6px 8px -1px rgba(0,0,0,0.15); }
+        .action-btn-secondary { background-color: var(--text-muted); }
+        .action-btn-accent { background-color: #f59e0b; color: #fff !important; }
+        
+        .contact-role { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; display: block; margin-bottom: 0.25rem;}
+        .contact-link { color: var(--accent); text-decoration: none; font-weight: 500; display: block; margin-top: 0.25rem; }
+        .contact-link:hover { text-decoration: underline; }
+    </style>
 </head>
 <body>
     
     <site-nav></site-nav>
 
-    <div class="content">
-        <h1>Community Action</h1>
-        <p>The Siouxland deserves transparency. Here is how you can get involved and ensure our community's voice is heard.</p>
+    <!-- Switched to semantic <main> tag for WCAG compliance -->
+    <main class="content">
+        <h1 style="text-align: center;">Community Action</h1>
+        <p style="text-align: center; font-size: 1.15rem; max-width: 600px; margin: 0 auto;">
+            The Siouxland deserves transparency. Here is how you can get involved and ensure our community's voice is heard.
+        </p>
         
+        <!-- Unified Action Buttons -->
+        <div class="action-container">
+            <a href="mailto:salixmayor@gmail.com,salixcouncil1@gmail.com,salixcouncil2@gmail.com,salixcouncil3@gmail.com,salixcouncil4@gmail.com?subject=Community%20Concerns%20Regarding%20Data%20Center%20Rezoning" class="action-btn" aria-label="Send an email to the entire Salix City Council">Email Salix Council</a>
+            <a href="mailto:mnelson@woodburycountyiowa.gov,dbittinger@woodburycountyiowa.gov,kentcarper55@gmail.com,ddietrich@wiatel.net,matthewung@woodburycountyiowa.gov?subject=Moratorium%20and%20Zoning%20Concerns%20-%20Salix%20Data%20Center" class="action-btn action-btn-secondary" aria-label="Send an email to the Woodbury County Supervisors">Email County Supervisors</a>
+            <a href="https://www.change.org/search?q=Salix%20data%20center" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-accent" aria-label="Sign the Change.org Petition against the data center">Sign the Petition</a>
+        </div>
+
         <hr>
 
-        <h2>Upcoming Meetings</h2>
-        <ul>
-            <li><strong>Salix City Council Meeting:</strong> The City Council meets on the second Wednesday of each month at 7:00 PM. Meetings are held in the Council Chambers located directly behind City Hall at 317 Tipton St., Salix, IA 51052.</li>
-            <li><strong>Woodbury County Zoning Commission:</strong> Meets on the fourth Monday of each month at 5:00 PM. Meetings take place at 620 Douglas St., Sioux City, IA 51101.</li>
-            <li><strong>Woodbury County Board of Adjustment:</strong> Meets on the first Monday of the month.</li>
-        </ul>
+        <h2>Upcoming Public Meetings</h2>
+        <p>Make your voice heard. If you wish to speak at a meeting, please contact the respective council or board ahead of time to be placed on the agenda.</p>
+
+        <!-- Urgency Callouts for Meetings -->
+        <div class="callout" style="border-left-color: #f59e0b; background-color: rgba(245, 158, 11, 0.1); margin-bottom: 1.5rem; text-align: left;">
+            <h3 style="color: #d97706; margin-top: 0;">Salix City Council</h3>
+            <p style="margin-bottom: 0;"><strong>When:</strong> Second Wednesday of each month at 7:00 PM.<br>
+            <strong>Where:</strong> Council Chambers (directly behind City Hall), 317 Tipton St., Salix, IA 51052.</p>
+        </div>
+
+        <div class="callout" style="border-left-color: #3b82f6; background-color: rgba(59, 130, 246, 0.1); text-align: left;">
+            <h3 style="color: #2563eb; margin-top: 0;">Woodbury County Zoning Commission</h3>
+            <p style="margin-bottom: 0;"><strong>When:</strong> Fourth Monday of each month at 5:00 PM.<br>
+            <strong>Where:</strong> 620 Douglas St., Sioux City, IA 51101.<br>
+            <em>Note: The Woodbury County Board of Adjustment meets on the first Monday of the month.</em></p>
+        </div>
+
+        <hr>
 
         <h2>Contact Your Representatives</h2>
-        <p>Call or email the Salix City Council to demand guarantees on water usage, noise limits, and local infrastructure support. If you want to speak at a meeting, you must contact them to be added to the agenda.</p>
-        
-        <ul>
-            <li><strong>City Hall General Phone:</strong> 712-946-5645</li>
-            <li><strong>Kevin Nelson</strong> (Mayor) - salixmayor@gmail.com</li>
-            <li><strong>Denise Burkhart</strong> (Mayor Pro-Tem, Roads) - salixcouncil1@gmail.com</li>
-            <li><strong>Brenda Smith-Hansen</strong> (Community Development) - salixcouncil2@gmail.com</li>
-            <li><strong>Gene Monk</strong> (Parks) - salixcouncil3@gmail.com</li>
-            <li><strong>Emily Clayton</strong> (Water) - salixcouncil4@gmail.com</li>
-        </ul>
+        <p>Call or email local officials to demand guarantees on water usage, noise limits, and infrastructure strain.</p>
 
-    </div>
+        <!-- Converted to Card Grid -->
+        <h3 style="margin-top: 2rem;">Salix City Officials</h3>
+        <div class="card-grid">
+            <div class="card">
+                <span class="contact-role">General Directory</span>
+                <h3 style="margin: 0 0 0.5rem 0;">City Hall & Public Works</h3>
+                <a href="tel:7129465645" class="contact-link" aria-label="Call Salix City Hall at 712-946-5645">📞 (712) 946-5645 (City Hall)</a>
+                <a href="tel:7124906734" class="contact-link" aria-label="Call Salix Public Works at 712-490-6734">📞 (712) 490-6734 (Maintenance/Water)</a>
+            </div>
+            <div class="card">
+                <span class="contact-role">Mayor</span>
+                <h3 style="margin: 0 0 0.5rem 0;">Kevin Nelson</h3>
+                <a href="mailto:salixmayor@gmail.com" class="contact-link" aria-label="Email Mayor Kevin Nelson">✉️ salixmayor@gmail.com</a>
+            </div>
+            <div class="card">
+                <span class="contact-role">Mayor Pro-Tem, Roads</span>
+                <h3 style="margin: 0 0 0.5rem 0;">Denise Burkhart</h3>
+                <a href="mailto:salixcouncil1@gmail.com" class="contact-link" aria-label="Email Council Member Denise Burkhart">✉️ salixcouncil1@gmail.com</a>
+            </div>
+            <div class="card">
+                <span class="contact-role">Community Development</span>
+                <h3 style="margin: 0 0 0.5rem 0;">Brenda Smith-Hansen</h3>
+                <a href="mailto:salixcouncil2@gmail.com" class="contact-link" aria-label="Email Council Member Brenda Smith-Hansen">✉️ salixcouncil2@gmail.com</a>
+            </div>
+            <div class="card">
+                <span class="contact-role">Parks</span>
+                <h3 style="margin: 0 0 0.5rem 0;">Gene Monk</h3>
+                <a href="mailto:salixcouncil3@gmail.com" class="contact-link" aria-label="Email Council Member Gene Monk">✉️ salixcouncil3@gmail.com</a>
+            </div>
+            <div class="card">
+                <span class="contact-role">Water</span>
+                <h3 style="margin: 0 0 0.5rem 0;">Emily Clayton</h3>
+                <a href="mailto:salixcouncil4@gmail.com" class="contact-link" aria-label="Email Council Member Emily Clayton">✉️ salixcouncil4@gmail.com</a>
+            </div>
+            <!-- Vacancy Note -->
+            <div class="card" style="border: 1px dashed var(--border-color); background-color: transparent;">
+                <span class="contact-role">Notice</span>
+                <p style="margin: 0; font-size: 0.9rem;"><em>A special election may be pending for recently vacated council seats. Stay tuned to official city postings.</em></p>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 3rem;">Woodbury County Leadership</h3>
+        <div class="card-grid">
+            <div class="card">
+                <span class="contact-role">Chairperson, District 3</span>
+                <h3 style="margin: 0 0 0.5rem 0;">Mark Nelson</h3>
+                <a href="tel:7125401259" class="contact-link" aria-label="Call Mark Nelson at 712-540-1259">📞 (712) 540-1259</a>
+                <a href="mailto:mnelson@woodburycountyiowa.gov" class="contact-link" aria-label="Email Mark Nelson">✉️ mnelson@woodburycountyiowa.gov</a>
+            </div>
+            <div class="card">
+                <span class="contact-role">Vice-Chairperson, District 5</span>
+                <h3 style="margin: 0 0 0.5rem 0;">David Dietrich</h3>
+                <a href="tel:7128709224" class="contact-link" aria-label="Call David Dietrich at 712-870-9224">📞 (712) 870-9224</a>
+                <a href="mailto:ddietrich@wiatel.net" class="contact-link" aria-label="Email David Dietrich">✉️ ddietrich@wiatel.net</a>
+            </div>
+            <div class="card">
+                <span class="contact-role">Supervisor, District 4</span>
+                <h3 style="margin: 0 0 0.5rem 0;">Matthew Ung</h3>
+                <a href="tel:7124907852" class="contact-link" aria-label="Call Matthew Ung at 712-490-7852">📞 (712) 490-7852</a>
+                <a href="mailto:matthewung@woodburycountyiowa.gov" class="contact-link" aria-label="Email Matthew Ung">✉️ matthewung@woodburycountyiowa.gov</a>
+            </div>
+            <div class="card">
+                <span class="contact-role">Supervisor, District 2</span>
+                <h3 style="margin: 0 0 0.5rem 0;">Daniel Bittinger II</h3>
+                <a href="tel:7123894405" class="contact-link" aria-label="Call Daniel Bittinger II at 712-389-4405">📞 (712) 389-4405</a>
+                <a href="mailto:dbittinger@woodburycountyiowa.gov" class="contact-link" aria-label="Email Daniel Bittinger II">✉️ dbittinger@woodburycountyiowa.gov</a>
+            </div>
+            <div class="card">
+                <span class="contact-role">Supervisor, District 1</span>
+                <h3 style="margin: 0 0 0.5rem 0;">Kent Carper</h3>
+                <a href="tel:7125707681" class="contact-link" aria-label="Call Kent Carper at 712-570-7681">📞 (712) 570-7681</a>
+                <a href="mailto:Kentcarper55@gmail.com" class="contact-link" aria-label="Email Kent Carper">✉️ Kentcarper55@gmail.com</a>
+            </div>
+            <div class="card">
+                <span class="contact-role">Community & Economic Dev.</span>
+                <h3 style="margin: 0 0 0.5rem 0;">Planning & Zoning</h3>
+                <a href="tel:7122796609" class="contact-link" aria-label="Call Woodbury County Planning & Zoning at 712-279-6609">📞 (712) 279-6609</a>
+                <a href="mailto:dpriestley@woodburycountyiowa.gov" class="contact-link" aria-label="Email Daniel Priestley, Zoning Coordinator">✉️ dpriestley@woodburycountyiowa.gov</a>
+            </div>
+        </div>
+
+    </main>
 
     <script src="assets/components.js"></script>
 </body>
