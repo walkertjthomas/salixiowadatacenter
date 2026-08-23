@@ -152,6 +152,7 @@
     <script src="assets/components.js"></script>
     
     <!-- Live Google News Fetch Script with Hidden Keyword Lock -->
+    <!-- Live Google News Fetch Script with Secure Keyword Lock -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const newsContainer = document.getElementById('live-news-feed');
@@ -170,12 +171,10 @@
                 // 1. The Core Lock: Broaden the anchor to easily pull 10 articles 
                 let finalQuery = 'Salix "data center"';
 
-                // 2. The Addition: True Fuzzy Search Logic
+                // 2. The Addition: Safely append user keywords
                 if (userKeyword.trim() !== '') {
-                    // Splits the user's words and joins them with ' OR ' so Google searches them individually
-                    const fuzzyKeywords = userKeyword.trim().split(/\s+/).join(' OR ');
-                    // The space acts as an 'AND', meaning: Salix AND "data center" AND (Keyword1 OR Keyword2)
-                    finalQuery += ` (${fuzzyKeywords})`;
+                    // Google natively treats spaces as the AND operator
+                    finalQuery += ` ${userKeyword.trim()}`;
                 }
 
                 // Construct the Google News URL
@@ -190,7 +189,6 @@
                         // Clear the container
                         newsContainer.innerHTML = '';
                         
-                        // Because we fetch gracefully, a 500 error from a 0-result search drops into the else block perfectly
                         if (data.status === 'ok' && data.items && data.items.length > 0) {
                             
                             // Slice to explicitly ensure we only show a max of 10
