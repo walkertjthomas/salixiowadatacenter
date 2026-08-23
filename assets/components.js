@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const controls = document.createElement('div');
     controls.className = 'floating-controls';
     controls.innerHTML = `
-        <button id="theme-toggle">🌓 Theme</button>
+        <button id="theme-toggle">🌙 Theme</button>
         <button id="font-toggle">Aa Size</button>
         <button id="cursor-toggle">✨ Cursor</button>
     `;
@@ -14,16 +14,26 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     const themeBtn = document.getElementById('theme-toggle');
     
+    // Helper function to update the button icon based on the current mode
+    const updateThemeIcon = (isDark) => {
+        themeBtn.innerHTML = isDark ? '☀️ Theme' : '🌙 Theme';
+    };
+    
     // Check localStorage on load
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
+        updateThemeIcon(true);
     }
     
     themeBtn.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        
+        // Update the icon to Sun or Moon
+        updateThemeIcon(isDark);
         
         // Save the new state to localStorage
-        if (document.body.classList.contains('dark-mode')) {
+        if (isDark) {
             localStorage.setItem('theme', 'dark');
         } else {
             localStorage.setItem('theme', 'light');
@@ -53,18 +63,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ==========================================
-    // 4. Cursor Trailer Logic
+    // 4. Cursor Trailer Logic (5-Second Fading Dots)
     // ==========================================
     const cursorBtn = document.getElementById('cursor-toggle');
-    const trailer = document.createElement('div');
-    trailer.className = 'cursor-trailer';
-    document.body.appendChild(trailer);
-
     let trailerEnabled = false;
 
-    const moveTrailer = (e) => {
-        trailer.style.left = e.clientX + 'px';
-        trailer.style.top = e.clientY + 'px';
+    // Function to spawn a dot at the mouse location
+    const spawnDot = (e) => {
+        const dot = document.createElement('div');
+        dot.className = 'cursor-dot';
+        dot.style.left = e.clientX + 'px';
+        dot.style.top = e.clientY + 'px';
+        document.body.appendChild(dot);
+        
+        // Automatically delete the dot from the DOM after 5 seconds (5000ms)
+        setTimeout(() => {
+            dot.remove();
+        }, 5000);
     };
 
     // Helper function to handle turning the cursor on/off and saving it
@@ -72,13 +87,14 @@ document.addEventListener("DOMContentLoaded", () => {
         trailerEnabled = enable;
         
         if (trailerEnabled) {
-            window.addEventListener('mousemove', moveTrailer);
-            trailer.style.opacity = '1';
+            window.addEventListener('mousemove', spawnDot);
             cursorBtn.classList.add('active');
         } else {
-            window.removeEventListener('mousemove', moveTrailer);
-            trailer.style.opacity = '0';
+            window.removeEventListener('mousemove', spawnDot);
             cursorBtn.classList.remove('active');
+            
+            // Instantly clear any trailing dots still on screen when turned off
+            document.querySelectorAll('.cursor-dot').forEach(dot => dot.remove());
         }
         
         // Save the new cursor state to localStorage
