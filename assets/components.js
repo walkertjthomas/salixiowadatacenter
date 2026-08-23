@@ -18,7 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
         themeBtn.innerHTML = isDark ? '☀️ Theme' : '🌙 Theme';
     };
     
-    if (localStorage.getItem('theme') === 'dark') {
+    // Check localStorage OR OS-level System Preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
         document.body.classList.add('dark-mode');
         updateThemeIcon(true);
     }
@@ -56,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ==========================================
-    // 4. Cursor Trailer Logic (5-Second Fading Dots)
+    // 4. Cursor Trailer Logic
     // ==========================================
     const cursorBtn = document.getElementById('cursor-toggle');
     let trailerEnabled = false;
@@ -64,20 +68,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const spawnDot = (e) => {
         const now = Date.now();
-        // Throttle: Only spawn a dot every 40ms to prevent browser lag
-        if (now - lastSpawnTime < 40) return;
+        // Lowered to 30ms so the trail looks slightly more connected
+        if (now - lastSpawnTime < 30) return;
         lastSpawnTime = now;
 
         const dot = document.createElement('div');
         dot.className = 'cursor-dot';
         dot.style.left = e.clientX + 'px';
         dot.style.top = e.clientY + 'px';
+        
+        // Randomize the starting size of each dot between 50% and 100%
+        const randomScale = (Math.random() * 0.5) + 0.5;
+        dot.style.setProperty('--start-scale', randomScale);
+        
         document.body.appendChild(dot);
         
-        // Automatically delete the dot from the DOM after 5 seconds
+        // Changed timeout to 3500ms (3.5 seconds)
         setTimeout(() => {
             dot.remove();
-        }, 5000);
+        }, 3500);
     };
 
     const toggleCursor = (enable) => {
@@ -90,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.removeEventListener('mousemove', spawnDot);
             cursorBtn.classList.remove('active');
             
-            // Clear any lingering dots immediately when turned off
+            // Clear lingering dots immediately when turned off
             document.querySelectorAll('.cursor-dot').forEach(dot => dot.remove());
         }
         
