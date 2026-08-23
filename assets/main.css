@@ -223,10 +223,10 @@ hr {
 }
 
 /* Unique Colors for Buttons */
-.btn-city { background-color: var(--accent); } 
-.btn-county { background-color: #64748b; } 
-.btn-petition { background-color: #f59e0b; } 
-.btn-fb { background-color: #1877f2; } 
+.btn-city { background-color: #059669; } /* Emerald Green: Represents local community/grassroots */
+.btn-county { background-color: #475569; } /* Slate Gray: Represents formal county administration */
+.btn-petition { background-color: #e11d48; } /* Crimson Red: High urgency/attention for signing */
+.btn-fb { background-color: #1877f2; } /* Official Facebook Blue */
 
 /* Contact Cards Typography */
 .contact-role { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; display: block; margin-bottom: 0.25rem;}
