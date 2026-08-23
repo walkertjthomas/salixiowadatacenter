@@ -216,35 +216,31 @@
     <script src="assets/components.js"></script>
     
     <!-- Live Google News Fetch Script -->
+    <!-- Live Google News Fetch Script (Native XML Parsing) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. The exact Google News Search Query
             const query = 'Salix Iowa data center';
             const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;
             
-            // 2. The free RSS-to-JSON proxy (requesting up to 100 items to support the large list views)
-            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&count=100`;
+            // Using a raw open-source proxy to bypass CORS and avoid all free-tier API limits
+            const apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
             
             const newsContainer = document.getElementById('live-news-feed');
             const loadingText = document.getElementById('news-loading');
             const dropdown = document.getElementById('article-count');
             
-            // Store the fetched articles so we don't have to re-fetch when users change the dropdown
             let allArticles = [];
 
             // Main rendering logic
             function renderArticles(limit) {
-                // Clear the current display
                 newsContainer.innerHTML = '';
                 
-                // Swap the CSS class based on the chosen limit
                 if (limit <= 8) {
-                    newsContainer.className = 'card-grid'; // Render as heavy boxes
+                    newsContainer.className = 'card-grid'; 
                 } else {
-                    newsContainer.className = 'news-list'; // Render as clean text links
+                    newsContainer.className = 'news-list'; 
                 }
 
-                // Get the exact number of articles requested (or maximum available if less)
                 const articlesToDisplay = allArticles.slice(0, limit);
                 
                 if (articlesToDisplay.length === 0) {
@@ -258,7 +254,6 @@
                     });
 
                     if (limit <= 8) {
-                        // Build Grid Cards
                         const card = document.createElement('div');
                         card.className = 'card';
                         card.style.borderTop = '4px solid var(--accent)';
@@ -270,7 +265,6 @@
                         `;
                         newsContainer.appendChild(card);
                     } else {
-                        // Build Clean List Rows
                         const listItem = document.createElement('div');
                         listItem.className = 'news-list-item';
                         
@@ -284,16 +278,22 @@
                 });
             }
 
-            // Execute the initial data fetch
+            // Fetch the raw XML and parse it natively in the browser
             fetch(apiUrl)
-                .then(response => response.json())
+                .then(response => response.text())
+                .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
                 .then(data => {
-                    if (data.status === 'ok' && data.items && data.items.length > 0) {
-                        // Save the data and hide loading text
-                        allArticles = data.items;
-                        loadingText.style.display = 'none';
+                    const items = data.querySelectorAll("item");
+                    
+                    if (items && items.length > 0) {
+                        // Map the XML nodes into our standard array format
+                        allArticles = Array.from(items).map(item => ({
+                            title: item.querySelector("title").textContent,
+                            link: item.querySelector("link").textContent,
+                            pubDate: item.querySelector("pubDate").textContent
+                        }));
                         
-                        // Render the default view (8 articles)
+                        loadingText.style.display = 'none';
                         renderArticles(parseInt(dropdown.value, 10));
                     } else {
                         loadingText.textContent = 'No recent news articles found matching this query.';
@@ -304,7 +304,7 @@
                     loadingText.textContent = 'Unable to load live news at this time. Please check the manual timeline below.';
                 });
 
-            // Listen for user changes to the dropdown to instantly re-render
+            // Listen for user changes to the dropdown
             dropdown.addEventListener('change', (e) => {
                 if (allArticles.length > 0) {
                     renderArticles(parseInt(e.target.value, 10));
