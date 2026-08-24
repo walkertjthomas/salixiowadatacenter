@@ -185,6 +185,23 @@ hr {
     border-radius: 8px;
 }
 
+/* Inset Box for Meeting Videos */
+.video-inset {
+    margin-top: 1rem; 
+    padding: 0.75rem; 
+    background-color: rgba(245, 158, 11, 0.05); /* Very light amber tint */
+    border-radius: 6px; 
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* Ensure the text inside the inset respects dark mode */
+.video-inset p {
+    color: var(--text-color) !important;
+}
+.video-inset span {
+    color: var(--text-muted) !important;
+}
+
 /* Action Buttons (Community Page) */
 .action-container { 
     display: flex; 
