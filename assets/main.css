@@ -481,4 +481,9 @@ hr {
     .nav-links a:hover {
         background-color: var(--card-bg);
     }
+
+    /* Hide the cursor trailer button on touch devices */
+    #cursor-toggle {
+        display: none !important;
+    }
 }
