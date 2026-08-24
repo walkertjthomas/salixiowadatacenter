@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const controls = document.createElement('div');
     controls.className = 'floating-controls';
     controls.innerHTML = `
-        <button id="theme-toggle">🌙 Theme</button>
-        <button id="font-toggle">Aa Size</button>
-        <button id="cursor-toggle">✨ Cursor</button>
+        <button id="theme-toggle" aria-label="Toggle Theme">🌙</button>
+        <button id="font-toggle" aria-label="Toggle Font Size">Aa</button>
+        <button id="cursor-toggle" aria-label="Toggle Magic Cursor">✨</button>
     `;
     document.body.appendChild(controls);
 
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeBtn = document.getElementById('theme-toggle');
     
     const updateThemeIcon = (isDark) => {
-        themeBtn.innerHTML = isDark ? '☀️ Theme' : '🌙 Theme';
+        themeBtn.innerHTML = isDark ? '☀️' : '🌙';
     };
     
     // Check localStorage OR OS-level System Preference
