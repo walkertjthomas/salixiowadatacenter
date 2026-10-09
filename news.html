@@ -23,10 +23,10 @@
     <meta property="twitter:title" content="News & Updates - Salix Data Center">
     <meta property="twitter:description" content="Track the latest news, city council votes, timeline updates, and legal actions regarding the proposed Salix, Iowa Data Center.">
 
-    <link rel="stylesheet" href="assets/main.css">
+    <link rel="stylesheet" href="assets/main.css?v=3">
     <script src="assets/nav.js"></script>
     
-    <!-- Inline styles to perfectly format the dynamic news cards, timeline, and search bar -->
+    <!-- Inline styles to format dynamic news cards, timeline, and search bar -->
     <style>
         .news-date { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         .news-link { color: var(--accent); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 1rem; }
@@ -57,7 +57,7 @@
     
     <site-nav></site-nav>
 
-    <div class="content">
+    <main class="content">
         <h1>Latest News & Timeline</h1>
         <p>Track the latest developments, legal challenges, and city council decisions.</p>
         
@@ -73,7 +73,7 @@
             <button id="search-btn">Filter News</button>
         </div>
 
-        <!-- Live News Container (Uses your existing CSS Grid!) -->
+        <!-- Live News Container (Displays up to 4 parsed articles) -->
         <div id="live-news-feed" class="card-grid">
             <p class="loading-text" id="news-loading">Fetching the latest articles from Google News...</p>
         </div>
@@ -147,11 +147,11 @@
             
         </div>
 
-    </div>
+    </main>
 
     <script src="assets/components.js"></script>
     
-    <!-- Live Google News Fetch Script with Secure Keyword Lock -->
+    <!-- Native DOMParser Live News Script (Route 2: Capped at 4 items) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const newsContainer = document.getElementById('live-news-feed');
@@ -159,59 +159,63 @@
             const searchInput = document.getElementById('news-search');
             const searchBtn = document.getElementById('search-btn');
 
-            // The core function to fetch and render articles
-            function fetchNews(userKeyword = '') {
-                // Show loading state
+            function fetchLiveNews(userKeyword = '') {
                 newsContainer.innerHTML = '';
                 loadingText.style.display = 'block';
-                loadingText.textContent = 'Fetching the latest articles from Google News...';
+                loadingText.textContent = 'Fetching live articles via Google News RSS...';
                 newsContainer.appendChild(loadingText);
 
-                // 1. The Core Lock: Broaden the anchor to easily pull 10 articles 
-                // Removed exact quotes and added 'Iowa' for better regional hits
+                // Build query string
                 let finalQuery = 'Salix Iowa data center';
-
-                // 2. The Addition: Safely append user keywords
                 if (userKeyword.trim() !== '') {
-                    // Google natively treats spaces as the AND operator
                     finalQuery += ` ${userKeyword.trim()}`;
                 }
-
-                // Append the time modifier to ensure it pulls historical articles if recent news is slow
                 finalQuery += ' when:1y';
 
-                // Construct the Google News URL
-                // Added a dynamic cache-buster (&_cb) so rss2json fetches fresh data instantly
-                const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(finalQuery)}&hl=en-US&gl=US&ceid=US:en&_cb=${Date.now()}`;
+                // Google News RSS endpoint
+                const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(finalQuery)}&hl=en-US&gl=US&ceid=US:en`;
                 
-                // Use the stable rss2json proxy (automatically capped at 10 items)
-                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
-                
-                fetch(apiUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Clear the container
-                        newsContainer.innerHTML = '';
-                        
-                        if (data.status === 'ok' && data.items && data.items.length > 0) {
-                            
-                            // Slice to explicitly ensure we only show a max of 10
-                            const articlesToDisplay = data.items.slice(0, 10);
-                            
-                            articlesToDisplay.forEach(article => {
-                                const pubDate = new Date(article.pubDate).toLocaleDateString('en-US', { 
-                                    month: 'short', day: 'numeric', year: 'numeric' 
-                                });
+                // Fetch raw XML through AllOrigins with cache-busting timestamp
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}&_t=${Date.now()}`;
 
-                                // Build the standard CSS card
+                fetch(proxyUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.text();
+                    })
+                    .then(xmlString => {
+                        // Native XML parsing via DOMParser
+                        const parser = new DOMParser();
+                        const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+                        const items = xmlDoc.getElementsByTagName('item');
+
+                        newsContainer.innerHTML = '';
+
+                        if (items && items.length > 0) {
+                            // Strictly cap at the top 4 articles
+                            const articlesToDisplay = Array.from(items).slice(0, 4);
+
+                            articlesToDisplay.forEach(item => {
+                                const title = item.getElementsByTagName('title')[0]?.textContent || 'Untitled Article';
+                                const link = item.getElementsByTagName('link')[0]?.textContent || '#';
+                                const pubDateRaw = item.getElementsByTagName('pubDate')[0]?.textContent;
+                                const source = item.getElementsByTagName('source')[0]?.textContent || '';
+
+                                let formattedDate = '';
+                                if (pubDateRaw) {
+                                    formattedDate = new Date(pubDateRaw).toLocaleDateString('en-US', {
+                                        month: 'short', day: 'numeric', year: 'numeric'
+                                    });
+                                }
+
                                 const card = document.createElement('div');
                                 card.className = 'card';
                                 card.style.borderTop = '4px solid var(--accent)';
                                 
                                 card.innerHTML = `
-                                    <span class="news-date">${pubDate}</span>
-                                    <h3 style="margin-top: 0; font-size: 1.15rem; line-height: 1.4;">${article.title}</h3>
-                                    <a href="${article.link}" target="_blank" rel="noopener noreferrer" class="news-link" aria-label="Read full article about ${article.title}">Read Full Article &rarr;</a>
+                                    <span class="news-date">${formattedDate}${source ? ` &bull; \${source}` : ''}</span>
+                                    <h3 style="margin-top: 0; font-size: 1.15rem; line-height: 1.4;">${title}</h3>
+                                    <a href="${link}" target="_blank" rel="noopener noreferrer" class="news-link" aria-label="Read full article: ${title.replace(/"/g, '&quot;')}">Read Full Article &rarr;</a>
                                 `;
                                 newsContainer.appendChild(card);
                             });
@@ -219,24 +223,24 @@
                             newsContainer.innerHTML = `<p class="loading-text">No recent news articles found matching: <strong>${userKeyword || "general updates"}</strong>.</p>`;
                         }
                     })
-                    .catch(error => {
-                        console.error('Error fetching news:', error);
+                    .catch(err => {
+                        console.error('Error parsing live RSS feed:', err);
                         newsContainer.innerHTML = '<p class="loading-text">Unable to load live news at this time. Please check the manual timeline below.</p>';
                     });
             }
 
-            // Execute the initial data fetch (with no extra keywords)
-            fetchNews();
+            // Initial fetch
+            fetchLiveNews();
 
-            // Listen for button clicks to trigger a new search
+            // Button trigger
             searchBtn.addEventListener('click', () => {
-                fetchNews(searchInput.value);
+                fetchLiveNews(searchInput.value);
             });
 
-            // Allow the user to just hit the "Enter" key inside the text box
-            searchInput.addEventListener('keypress', function (e) {
+            // Enter key trigger
+            searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
-                    fetchNews(searchInput.value);
+                    fetchLiveNews(searchInput.value);
                 }
             });
         });
