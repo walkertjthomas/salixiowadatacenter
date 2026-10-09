@@ -487,3 +487,20 @@ hr {
         display: none !important;
     }
 }
+
+/* ==========================================
+   Smooth Scrolling & Section Clearance
+   ========================================== */
+html {
+    scroll-behavior: smooth;
+}
+
+section[id] {
+    scroll-margin-top: 5.5rem; /* Clears sticky top-nav height */
+}
+
+/* Scrollspy active navigation indicator */
+.nav-links a.active {
+    color: var(--accent);
+    font-weight: 700;
+}
