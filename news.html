@@ -41,8 +41,8 @@
         .news-controls button:hover { opacity: 0.9; }
 
         /* ==========================================
-           Vertical Timeline Component
-           ========================================== */
+            Vertical Timeline Component
+            ========================================== */
         .timeline { position: relative; max-width: 800px; margin: 2rem auto; padding-left: 2rem; }
         .timeline::before { content: ''; position: absolute; top: 0; left: 8px; height: 100%; width: 4px; background: var(--border-color); border-radius: 2px; }
         .timeline-item { position: relative; margin-bottom: 2.5rem; }
@@ -151,7 +151,6 @@
 
     <script src="assets/components.js"></script>
     
-    <!-- Live Google News Fetch Script with Hidden Keyword Lock -->
     <!-- Live Google News Fetch Script with Secure Keyword Lock -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -169,7 +168,8 @@
                 newsContainer.appendChild(loadingText);
 
                 // 1. The Core Lock: Broaden the anchor to easily pull 10 articles 
-                let finalQuery = 'Salix "data center"';
+                // Removed exact quotes and added 'Iowa' for better regional hits
+                let finalQuery = 'Salix Iowa data center';
 
                 // 2. The Addition: Safely append user keywords
                 if (userKeyword.trim() !== '') {
@@ -177,8 +177,12 @@
                     finalQuery += ` ${userKeyword.trim()}`;
                 }
 
+                // Append the time modifier to ensure it pulls historical articles if recent news is slow
+                finalQuery += ' when:1y';
+
                 // Construct the Google News URL
-                const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(finalQuery)}&hl=en-US&gl=US&ceid=US:en`;
+                // Added a dynamic cache-buster (&_cb) so rss2json fetches fresh data instantly
+                const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(finalQuery)}&hl=en-US&gl=US&ceid=US:en&_cb=${Date.now()}`;
                 
                 // Use the stable rss2json proxy (automatically capped at 10 items)
                 const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
