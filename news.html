@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="assets/main.css?v=3">
     <script src="assets/nav.js"></script>
     
-    <!-- Inline styles to format dynamic news cards, timeline, and search bar -->
+    <!-- Inline styles to perfectly format the dynamic news cards, timeline, and search bar -->
     <style>
         .news-date { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         .news-link { color: var(--accent); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 1rem; }
@@ -57,7 +57,7 @@
     
     <site-nav></site-nav>
 
-    <main class="content">
+    <div class="content">
         <h1>Latest News & Timeline</h1>
         <p>Track the latest developments, legal challenges, and city council decisions.</p>
         
@@ -66,16 +66,17 @@
         <h2>Live Community Coverage</h2>
         <p style="margin-bottom: 1.5rem;"><em>Auto-updating live news coverage regarding the proposed Salix data center footprint.</em></p>
         
-        <!-- Contextual Search Box -->
+        <!-- Contextual Search Box with External Google News Link -->
         <div class="news-controls">
-            <label for="news-search" style="font-weight: 600; color: var(--text-color);">Filter the latest coverage: </label>
-            <input type="text" id="news-search" placeholder="e.g. lawsuit, water, Google, moratorium..." aria-label="Filter news keywords">
+            <label for="news-search" style="font-weight: 600; color: var(--text-color);">Filter coverage: </label>
+            <input type="text" id="news-search" placeholder="e.g. lawsuit, water, Google..." aria-label="Filter news keywords">
             <button id="search-btn">Filter News</button>
+            <a href="https://news.google.com/search?q=Salix+Iowa+data+center&hl=en-US&gl=US&ceid=US%3Aen" target="_blank" rel="noopener noreferrer" style="font-size: 0.9rem; color: var(--accent); font-weight: 600; text-decoration: underline; margin-left: auto; white-space: nowrap;">Open Live Google News &rarr;</a>
         </div>
 
-        <!-- Live News Container (Displays up to 4 parsed articles) -->
+        <!-- Live News Container -->
         <div id="live-news-feed" class="card-grid">
-            <p class="loading-text" id="news-loading">Fetching the latest articles from Google News...</p>
+            <p class="loading-text" id="news-loading">Fetching the latest articles from regional feeds and Bing News...</p>
         </div>
 
         <hr>
@@ -147,11 +148,11 @@
             
         </div>
 
-    </main>
+    </div>
 
     <script src="assets/components.js"></script>
     
-    <!-- Native DOMParser Live News Script (Route 2: Capped at 4 items) -->
+    <!-- Multi-Feed Aggregation Script (Bing + Local Feeds) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const newsContainer = document.getElementById('live-news-feed');
@@ -159,88 +160,113 @@
             const searchInput = document.getElementById('news-search');
             const searchBtn = document.getElementById('search-btn');
 
-            function fetchLiveNews(userKeyword = '') {
+            // 1. Define the 4 Feeds (3 Hyper-Local + 1 Targeted Bing Fail-Safe)
+            const localFeeds = [
+                { name: "Bing News", url: "https://www.bing.com/news/search?q=Salix+Iowa+data+center&format=rss" },
+                { name: "KTIV News 4", url: "https://www.ktiv.com/arc/outboundfeeds/rss/" },
+                { name: "Sioux City Journal", url: "https://siouxcityjournal.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc" },
+                { name: "Iowa Public Radio", url: "https://www.iowapublicradio.org/rss" }
+            ];
+
+            function fetchLocalFeeds(filterTerm = '') {
                 newsContainer.innerHTML = '';
                 loadingText.style.display = 'block';
-                loadingText.textContent = 'Fetching live articles via Google News RSS...';
+                loadingText.textContent = 'Scanning regional feeds and Bing News fail-safe...';
                 newsContainer.appendChild(loadingText);
 
-                // Build query string
-                let finalQuery = 'Salix Iowa data center';
-                if (userKeyword.trim() !== '') {
-                    finalQuery += ` ${userKeyword.trim()}`;
-                }
-                finalQuery += ' when:1y';
+                const fetchPromises = localFeeds.map(feed => {
+                    // Use AllOrigins proxy to bypass CORS blocks, applying a timestamp cache buster
+                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(feed.url)}&_t=${Date.now()}`;
+                    return fetch(proxyUrl)
+                        .then(res => res.ok ? res.text() : '')
+                        .then(xmlString => {
+                            if (!xmlString) return [];
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+                            const items = xmlDoc.getElementsByTagName('item');
 
-                // Google News RSS endpoint
-                const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(finalQuery)}&hl=en-US&gl=US&ceid=US:en`;
-                
-                // Fetch raw XML through AllOrigins with cache-busting timestamp
-                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}&_t=${Date.now()}`;
+                            return Array.from(items).map(item => ({
+                                title: item.getElementsByTagName('title')[0]?.textContent || 'Untitled',
+                                link: item.getElementsByTagName('link')[0]?.textContent || '#',
+                                pubDate: new Date(item.getElementsByTagName('pubDate')[0]?.textContent || 0),
+                                source: feed.name
+                            }));
+                        })
+                        .catch(() => []);
+                });
 
-                fetch(proxyUrl)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
-                        return response.text();
-                    })
-                    .then(xmlString => {
-                        // Native XML parsing via DOMParser
-                        const parser = new DOMParser();
-                        const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
-                        const items = xmlDoc.getElementsByTagName('item');
+                Promise.all(fetchPromises).then(feedResults => {
+                    newsContainer.innerHTML = '';
 
-                        newsContainer.innerHTML = '';
+                    // Flatten all feed results into one single list
+                    let allArticles = feedResults.flat();
 
-                        if (items && items.length > 0) {
-                            // Strictly cap at the top 4 articles
-                            const articlesToDisplay = Array.from(items).slice(0, 4);
+                    // Filter out any articles with missing/invalid dates
+                    allArticles = allArticles.filter(art => art.pubDate.getTime() > 0);
 
-                            articlesToDisplay.forEach(item => {
-                                const title = item.getElementsByTagName('title')[0]?.textContent || 'Untitled Article';
-                                const link = item.getElementsByTagName('link')[0]?.textContent || '#';
-                                const pubDateRaw = item.getElementsByTagName('pubDate')[0]?.textContent;
-                                const source = item.getElementsByTagName('source')[0]?.textContent || '';
+                    // Sort newest to oldest
+                    allArticles.sort((a, b) => b.pubDate - a.pubDate);
 
-                                let formattedDate = '';
-                                if (pubDateRaw) {
-                                    formattedDate = new Date(pubDateRaw).toLocaleDateString('en-US', {
-                                        month: 'short', day: 'numeric', year: 'numeric'
-                                    });
-                                }
+                    // Filter for user custom keyword
+                    const term = filterTerm.trim().toLowerCase();
+                    if (term !== '') {
+                        allArticles = allArticles.filter(art => art.title.toLowerCase().includes(term));
+                    } else {
+                        // Default filter to ensure the local feeds only show relevant data center news
+                        const defaultKeywords = ['salix', 'data center', 'woodbury', 'midamerican', 'water', 'zoning', 'moratorium', 'google'];
+                        const targeted = allArticles.filter(art => 
+                            defaultKeywords.some(kw => art.title.toLowerCase().includes(kw))
+                        );
+                        // Prioritize matched keywords; fallback to general news only if nothing matches
+                        if (targeted.length > 0) allArticles = targeted;
+                    }
 
-                                const card = document.createElement('div');
-                                card.className = 'card';
-                                card.style.borderTop = '4px solid var(--accent)';
-                                
-                                card.innerHTML = `
-                                    <span class="news-date">${formattedDate}${source ? ` &bull; \${source}` : ''}</span>
-                                    <h3 style="margin-top: 0; font-size: 1.15rem; line-height: 1.4;">${title}</h3>
-                                    <a href="${link}" target="_blank" rel="noopener noreferrer" class="news-link" aria-label="Read full article: ${title.replace(/"/g, '&quot;')}">Read Full Article &rarr;</a>
-                                `;
-                                newsContainer.appendChild(card);
-                            });
-                        } else {
-                            newsContainer.innerHTML = `<p class="loading-text">No recent news articles found matching: <strong>${userKeyword || "general updates"}</strong>.</p>`;
+                    // De-duplicate by exact title (prevents Bing and Local feeds from doubling up)
+                    const uniqueArticles = [];
+                    const seenTitles = new Set();
+                    for (const art of allArticles) {
+                        if (!seenTitles.has(art.title)) {
+                            seenTitles.add(art.title);
+                            uniqueArticles.push(art);
                         }
-                    })
-                    .catch(err => {
-                        console.error('Error parsing live RSS feed:', err);
-                        newsContainer.innerHTML = '<p class="loading-text">Unable to load live news at this time. Please check the manual timeline below.</p>';
-                    });
+                    }
+
+                    if (uniqueArticles.length > 0) {
+                        // Display exactly the top 4 articles in the grid
+                        uniqueArticles.slice(0, 4).forEach(article => {
+                            const dateStr = article.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            card.style.borderTop = '4px solid var(--accent)';
+                            card.innerHTML = `
+                                <span class="news-date">${dateStr} &bull; ${article.source}</span>
+                                <h3 style="margin-top: 0; font-size: 1.15rem; line-height: 1.4;">${article.title}</h3>
+                                <a href="${article.link}" target="_blank" rel="noopener noreferrer" class="news-link" aria-label="Read full article about ${article.title.replace(/"/g, '&quot;')}">Read Full Article &rarr;</a>
+                            `;
+                            newsContainer.appendChild(card);
+                        });
+                    } else {
+                        newsContainer.innerHTML = `<p class="loading-text">No articles found matching "<strong>${filterTerm || 'Salix / Data Center'}</strong>". Try searching general terms like "water" or "zoning".</p>`;
+                    }
+                }).catch(err => {
+                    console.error('Feed error:', err);
+                    newsContainer.innerHTML = '<p class="loading-text">Unable to load news feeds at this time. Please see the verified timeline below.</p>';
+                });
             }
 
-            // Initial fetch
-            fetchLiveNews();
+            // Execute the initial data fetch
+            fetchLocalFeeds();
 
-            // Button trigger
+            // Listen for button clicks to trigger a new search
             searchBtn.addEventListener('click', () => {
-                fetchLiveNews(searchInput.value);
+                fetchLocalFeeds(searchInput.value);
             });
 
-            // Enter key trigger
-            searchInput.addEventListener('keypress', (e) => {
+            // Allow the user to hit the "Enter" key inside the text box
+            searchInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
-                    fetchLiveNews(searchInput.value);
+                    fetchLocalFeeds(searchInput.value);
                 }
             });
         });
