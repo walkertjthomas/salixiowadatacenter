@@ -26,19 +26,41 @@
     <link rel="stylesheet" href="assets/main.css?v=3">
     <script src="assets/nav.js"></script>
     
-    <!-- Inline styles for dynamic news cards, timeline, and search bar -->
+    <!-- Inline styles for timeline and feed buttons -->
     <style>
-        .news-date { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-        .news-link { color: var(--accent); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 1rem; }
-        .news-link:hover { text-decoration: underline; }
-        .loading-text { font-style: italic; color: var(--text-muted); }
-
-        /* Search Bar Component */
-        .news-controls { margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; background-color: var(--card-bg); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); flex-wrap: wrap;}
-        .news-controls input[type="text"] { flex-grow: 1; padding: 0.65rem 1rem; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-color); color: var(--text-color); font-family: inherit; font-size: 0.95rem; min-width: 200px;}
-        .news-controls input[type="text"]:focus { outline: 2px solid var(--accent); border-color: transparent; }
-        .news-controls button { padding: 0.65rem 1.5rem; border-radius: 4px; border: none; background-color: var(--accent); color: white; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
-        .news-controls button:hover { opacity: 0.9; }
+        /* Feed Buttons Component */
+        .feed-btn { 
+            display: block; 
+            padding: 0.75rem 1rem; 
+            border-radius: 6px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            text-align: center;
+            transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s;
+            color: #fff !important;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .feed-btn:hover { 
+            opacity: 0.9; 
+            transform: translateY(-2px); 
+            text-decoration: none; 
+            box-shadow: 0 6px 8px -1px rgba(0,0,0,0.15); 
+        }
+        .rss-link { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.35rem; 
+        }
+        .rss-link:hover { 
+            color: var(--accent); 
+            text-decoration: underline; 
+        }
 
         /* ==========================================
             Vertical Timeline Component
@@ -63,19 +85,61 @@
         
         <hr>
 
-        <h2>Live Community Coverage</h2>
-        <p style="margin-bottom: 1.5rem;"><em>Auto-updating live news coverage regarding the proposed Salix data center footprint.</em></p>
+        <h2>Live News Feeds</h2>
+        <p style="margin-bottom: 1.5rem;">Access the latest live coverage regarding the Salix Data Center directly from verified regional and national outlets. Click to view the formatted articles on their native sites, or grab the RSS link for your personal news reader.</p>
         
-        <!-- Contextual Search Box -->
-        <div class="news-controls">
-            <label for="news-search" style="font-weight: 600; color: var(--text-color);">Filter coverage: </label>
-            <input type="text" id="news-search" placeholder="e.g. lawsuit, water..." aria-label="Filter news keywords">
-            <button id="search-btn">Filter News</button>
-        </div>
+        <!-- Live News Sources Directory (Crash-Proof) -->
+        <div class="card-grid">
+            
+            <!-- Bing News -->
+            <div class="card" style="border-top: 4px solid #0078D7;">
+                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">Bing News</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">Live aggregated national and regional coverage.</p>
+                <a href="https://www.bing.com/news/search?q=Salix+Iowa+data+center" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #0078D7;">View Live News &rarr;</a>
+                <a href="https://www.bing.com/news/search?q=Salix+Iowa+data+center&format=rss" target="_blank" rel="noopener noreferrer" class="rss-link">📋 Get RSS Feed Link</a>
+            </div>
 
-        <!-- Live News Container -->
-        <div id="live-news-feed" class="card-grid">
-            <p class="loading-text" id="news-loading">Fetching the latest coverage...</p>
+            <!-- Yahoo News -->
+            <div class="card" style="border-top: 4px solid #720e9e;">
+                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">Yahoo News</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">Alternative national syndicated news search.</p>
+                <a href="https://news.yahoo.com/search?p=Salix+Iowa+data+center" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #720e9e;">View Live News &rarr;</a>
+                <!-- Note: Yahoo disabled custom search RSS, so we only provide the direct web link here -->
+                <span class="rss-link" style="color: var(--border-color); cursor: not-allowed;" title="Yahoo does not support custom RSS feeds">📋 RSS Not Available</span>
+            </div>
+
+            <!-- Sioux City Journal -->
+            <div class="card" style="border-top: 4px solid #0f172a;">
+                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">Sioux City Journal</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">The primary newspaper covering Woodbury County.</p>
+                <a href="https://siouxcityjournal.com/search/?q=data+center+salix" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #475569;">View Local Coverage &rarr;</a>
+                <a href="https://siouxcityjournal.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc" target="_blank" rel="noopener noreferrer" class="rss-link">📋 Get RSS Feed Link</a>
+            </div>
+
+            <!-- KTIV News 4 -->
+            <div class="card" style="border-top: 4px solid #dc2626;">
+                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">KTIV News 4</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">Siouxland's local NBC broadcast news affiliate.</p>
+                <a href="https://www.ktiv.com/search/?q=salix+data+center" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #dc2626;">View Local Coverage &rarr;</a>
+                <a href="https://www.ktiv.com/arc/outboundfeeds/rss/" target="_blank" rel="noopener noreferrer" class="rss-link">📋 Get RSS Feed Link</a>
+            </div>
+
+            <!-- Iowa Public Radio -->
+            <div class="card" style="border-top: 4px solid #ea580c;">
+                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">Iowa Public Radio</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">Statewide coverage and deep-dive utility reporting.</p>
+                <a href="https://www.iowapublicradio.org/search?q=salix+data+center" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #ea580c;">View Statewide Coverage &rarr;</a>
+                <a href="https://www.iowapublicradio.org/rss" target="_blank" rel="noopener noreferrer" class="rss-link">📋 Get RSS Feed Link</a>
+            </div>
+
+            <!-- Google News -->
+            <div class="card" style="border-top: 4px solid #10b981;">
+                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">Google News</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">Comprehensive automated news aggregation.</p>
+                <a href="https://news.google.com/search?q=Salix+Iowa+data+center&hl=en-US&gl=US&ceid=US%3Aen" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #10b981;">View Live News &rarr;</a>
+                <a href="https://news.google.com/rss/search?q=Salix+Iowa+data+center&hl=en-US&gl=US&ceid=US:en" target="_blank" rel="noopener noreferrer" class="rss-link">📋 Get RSS Feed Link</a>
+            </div>
+
         </div>
 
         <hr>
@@ -150,121 +214,5 @@
     </main>
 
     <script src="assets/components.js"></script>
-    
-    <!-- Strict Live Dynamic Feed (No Hardcoded Fallbacks) -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const newsContainer = document.getElementById('live-news-feed');
-            const loadingText = document.getElementById('news-loading');
-            const searchInput = document.getElementById('news-search');
-            const searchBtn = document.getElementById('search-btn');
-
-            function renderCards(articles) {
-                newsContainer.innerHTML = '';
-                articles.slice(0, 4).forEach(article => {
-                    const dateStr = article.pubDate.toLocaleDateString('en-US', {
-                        month: 'short', day: 'numeric', year: 'numeric'
-                    });
-
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.style.borderTop = '4px solid var(--accent)';
-                    card.innerHTML = `
-                        <span class="news-date">${dateStr} &bull; ${article.source}</span>
-                        <h3 style="margin-top: 0; font-size: 1.15rem; line-height: 1.4;">${article.title}</h3>
-                        <a href="${article.link}" target="_blank" rel="noopener noreferrer" class="news-link" aria-label="Read full article: ${article.title.replace(/"/g, '&quot;')}">Read Full Article &rarr;</a>
-                    `;
-                    newsContainer.appendChild(card);
-                });
-            }
-
-            async function fetchLiveNews(filterTerm = '') {
-                newsContainer.innerHTML = '';
-                loadingText.style.display = 'block';
-                loadingText.textContent = 'Fetching the latest coverage...';
-                newsContainer.appendChild(loadingText);
-
-                // Build the Bing News query
-                let query = 'Salix Iowa data center';
-                const term = filterTerm.trim();
-                if (term !== '') {
-                    query += ` ${term}`;
-                }
-
-                const bingUrl = `https://www.bing.com/news/search?q=${encodeURIComponent(query)}`;
-                const rssUrl = `${bingUrl}&format=rss`;
-                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}&_t=${Date.now()}`;
-
-                try {
-                    const res = await fetch(proxyUrl, { cache: "no-store" });
-                    if (!res.ok) throw new Error('Proxy network error');
-                    
-                    const xmlString = await res.text();
-                    const parser = new DOMParser();
-                    const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
-                    
-                    // Guard against XML parser error documents
-                    if (xmlDoc.getElementsByTagName('parsererror').length > 0) throw new Error('XML parsing failed');
-
-                    const items = xmlDoc.getElementsByTagName('item');
-                    let articles = Array.from(items).map(item => ({
-                        title: item.getElementsByTagName('title')[0]?.textContent || 'Untitled',
-                        link: item.getElementsByTagName('link')[0]?.textContent || '#',
-                        pubDate: new Date(item.getElementsByTagName('pubDate')[0]?.textContent || 0),
-                        source: 'Bing News'
-                    })).filter(art => art.pubDate.getTime() > 0);
-
-                    // Sort newest to oldest
-                    articles.sort((a, b) => b.pubDate - a.pubDate);
-
-                    // De-duplicate by title
-                    const uniqueArticles = [];
-                    const seenTitles = new Set();
-                    for (const art of articles) {
-                        const normalized = art.title.trim().toLowerCase();
-                        if (!seenTitles.has(normalized)) {
-                            seenTitles.add(normalized);
-                            uniqueArticles.push(art);
-                        }
-                    }
-
-                    if (uniqueArticles.length > 0) {
-                        renderCards(uniqueArticles);
-                    } else {
-                        // Empty State: Direct the user to the actual search results
-                        newsContainer.innerHTML = `
-                            <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
-                                <p class="loading-text" style="margin-bottom: 0.5rem;">No recent articles found matching "<strong>${filterTerm}</strong>".</p>
-                                <a href="${bingUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); font-weight: 600; text-decoration: underline;">Click here to view live coverage directly on Bing &rarr;</a>
-                            </div>
-                        `;
-                    }
-
-                } catch (err) {
-                    console.error('Feed error caught. Displaying direct link to source.', err);
-                    // Network Failure State: Provide the direct link to the search feed
-                    newsContainer.innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px;">
-                            <p class="loading-text" style="margin-bottom: 0.5rem;">Unable to load the live preview feed at this time.</p>
-                            <a href="${bingUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); font-weight: 600; text-decoration: underline;">Open live Salix Data Center news directly &rarr;</a>
-                        </div>
-                    `;
-                }
-            }
-
-            // Execute the initial data fetch
-            fetchLiveNews();
-
-            // Listen for button clicks to trigger a new search
-            searchBtn.addEventListener('click', () => fetchLiveNews(searchInput.value));
-
-            // Allow the user to hit the "Enter" key inside the text box
-            searchInput.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    fetchLiveNews(searchInput.value);
-                }
-            });
-        });
-    </script>
 </body>
 </html>
