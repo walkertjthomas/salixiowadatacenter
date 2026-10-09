@@ -26,41 +26,19 @@
     <link rel="stylesheet" href="assets/main.css?v=3">
     <script src="assets/nav.js"></script>
     
-    <!-- Inline styles for timeline and feed buttons -->
+    <!-- Inline styles for dynamic news cards, timeline, and search bar -->
     <style>
-        /* Feed Buttons Component */
-        .feed-btn { 
-            display: block; 
-            padding: 0.75rem 1rem; 
-            border-radius: 6px; 
-            text-decoration: none; 
-            font-weight: 600; 
-            text-align: center;
-            transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s;
-            color: #fff !important;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-        .feed-btn:hover { 
-            opacity: 0.9; 
-            transform: translateY(-2px); 
-            text-decoration: none; 
-            box-shadow: 0 6px 8px -1px rgba(0,0,0,0.15); 
-        }
-        .rss-link { 
-            color: var(--text-muted); 
-            text-decoration: none; 
-            font-size: 0.85rem; 
-            font-weight: 600; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 0.35rem; 
-        }
-        .rss-link:hover { 
-            color: var(--accent); 
-            text-decoration: underline; 
-        }
+        .news-date { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .news-link { color: var(--accent); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 1rem; }
+        .news-link:hover { text-decoration: underline; }
+        .loading-text { font-style: italic; color: var(--text-muted); }
+
+        /* Search Bar Component */
+        .news-controls { margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; background-color: var(--card-bg); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); flex-wrap: wrap;}
+        .news-controls input[type="text"] { flex-grow: 1; padding: 0.65rem 1rem; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-color); color: var(--text-color); font-family: inherit; font-size: 0.95rem; min-width: 200px;}
+        .news-controls input[type="text"]:focus { outline: 2px solid var(--accent); border-color: transparent; }
+        .news-controls button { padding: 0.65rem 1.5rem; border-radius: 4px; border: none; background-color: var(--accent); color: white; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        .news-controls button:hover { opacity: 0.9; }
 
         /* ==========================================
             Vertical Timeline Component
@@ -72,7 +50,7 @@
         .timeline-date { font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; font-size: 1.1rem; letter-spacing: 0.05em; text-transform: uppercase; }
         .timeline-content { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         .timeline-content h3 { margin-top: 0; color: var(--text-color); }
-        .timeline-content p { margin-bottom: 0; }
+        .timeline-content p { margin-bottom: 0.5rem; }
     </style>
 </head>
 <body>
@@ -85,61 +63,19 @@
         
         <hr>
 
-        <h2>Live News Feeds</h2>
-        <p style="margin-bottom: 1.5rem;">Access the latest live coverage regarding the Salix Data Center directly from verified regional and national outlets. Click to view the formatted articles on their native sites, or grab the RSS link for your personal news reader.</p>
+        <h2>Live Community Coverage</h2>
+        <p style="margin-bottom: 1.5rem;"><em>Auto-updating live news coverage regarding the proposed Salix data center footprint.</em></p>
         
-        <!-- Live News Sources Directory (Crash-Proof) -->
-        <div class="card-grid">
-            
-            <!-- Bing News -->
-            <div class="card" style="border-top: 4px solid #0078D7;">
-                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">Bing News</h3>
-                <p style="font-size: 0.95rem; margin-bottom: 0;">Live aggregated national and regional coverage.</p>
-                <a href="https://www.bing.com/news/search?q=Salix+Iowa+data+center" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #0078D7;">View Live News &rarr;</a>
-                <a href="https://www.bing.com/news/search?q=Salix+Iowa+data+center&format=rss" target="_blank" rel="noopener noreferrer" class="rss-link">📋 Get RSS Feed Link</a>
-            </div>
+        <!-- Contextual Search Box -->
+        <div class="news-controls">
+            <label for="news-search" style="font-weight: 600; color: var(--text-color);">Filter coverage: </label>
+            <input type="text" id="news-search" placeholder="e.g. lawsuit, water, Google, moratorium..." aria-label="Filter news keywords">
+            <button id="search-btn">Filter News</button>
+        </div>
 
-            <!-- Yahoo News -->
-            <div class="card" style="border-top: 4px solid #720e9e;">
-                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">Yahoo News</h3>
-                <p style="font-size: 0.95rem; margin-bottom: 0;">Alternative national syndicated news search.</p>
-                <a href="https://news.yahoo.com/search?p=Salix+Iowa+data+center" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #720e9e;">View Live News &rarr;</a>
-                <!-- Note: Yahoo disabled custom search RSS, so we only provide the direct web link here -->
-                <span class="rss-link" style="color: var(--border-color); cursor: not-allowed;" title="Yahoo does not support custom RSS feeds">📋 RSS Not Available</span>
-            </div>
-
-            <!-- Sioux City Journal -->
-            <div class="card" style="border-top: 4px solid #0f172a;">
-                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">Sioux City Journal</h3>
-                <p style="font-size: 0.95rem; margin-bottom: 0;">The primary newspaper covering Woodbury County.</p>
-                <a href="https://siouxcityjournal.com/search/?q=data+center+salix" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #475569;">View Local Coverage &rarr;</a>
-                <a href="https://siouxcityjournal.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc" target="_blank" rel="noopener noreferrer" class="rss-link">📋 Get RSS Feed Link</a>
-            </div>
-
-            <!-- KTIV News 4 -->
-            <div class="card" style="border-top: 4px solid #dc2626;">
-                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">KTIV News 4</h3>
-                <p style="font-size: 0.95rem; margin-bottom: 0;">Siouxland's local NBC broadcast news affiliate.</p>
-                <a href="https://www.ktiv.com/search/?q=salix+data+center" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #dc2626;">View Local Coverage &rarr;</a>
-                <a href="https://www.ktiv.com/arc/outboundfeeds/rss/" target="_blank" rel="noopener noreferrer" class="rss-link">📋 Get RSS Feed Link</a>
-            </div>
-
-            <!-- Iowa Public Radio -->
-            <div class="card" style="border-top: 4px solid #ea580c;">
-                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">Iowa Public Radio</h3>
-                <p style="font-size: 0.95rem; margin-bottom: 0;">Statewide coverage and deep-dive utility reporting.</p>
-                <a href="https://www.iowapublicradio.org/search?q=salix+data+center" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #ea580c;">View Statewide Coverage &rarr;</a>
-                <a href="https://www.iowapublicradio.org/rss" target="_blank" rel="noopener noreferrer" class="rss-link">📋 Get RSS Feed Link</a>
-            </div>
-
-            <!-- Google News -->
-            <div class="card" style="border-top: 4px solid #10b981;">
-                <h3 style="margin-top: 0; margin-bottom: 0.25rem;">Google News</h3>
-                <p style="font-size: 0.95rem; margin-bottom: 0;">Comprehensive automated news aggregation.</p>
-                <a href="https://news.google.com/search?q=Salix+Iowa+data+center&hl=en-US&gl=US&ceid=US%3Aen" target="_blank" rel="noopener noreferrer" class="feed-btn" style="background-color: #10b981;">View Live News &rarr;</a>
-                <a href="https://news.google.com/rss/search?q=Salix+Iowa+data+center&hl=en-US&gl=US&ceid=US:en" target="_blank" rel="noopener noreferrer" class="rss-link">📋 Get RSS Feed Link</a>
-            </div>
-
+        <!-- Live News Container (Strict Dynamic Bing Feed: Top 4 by Date) -->
+        <div id="live-news-feed" class="card-grid">
+            <p class="loading-text" id="news-loading">Fetching live articles from Bing News...</p>
         </div>
 
         <hr>
@@ -149,12 +85,32 @@
 
         <div class="timeline">
             
-            <!-- Phase 4 (Current) -->
+            <!-- Phase 5 (Current Investigations) -->
+            <div class="timeline-item">
+                <div class="timeline-date">September 17, 2026</div>
+                <div class="timeline-content">
+                    <h3>State Ethics Board Accepts Salix Complaint</h3>
+                    <p>The Iowa Public Information Board (IPIB) formally accepts a complaint filed against the City of Salix, launching an investigation into alleged violations of Iowa's Open Meetings Law. The inquiry centers on transparency failures and the handling of the July 8 City Council meeting minutes.</p>
+                    <a href="https://www.siouxlandproud.com/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KCAU-TV Report &rarr;</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">August 21, 2026</div>
+                <div class="timeline-content">
+                    <h3>Public Backlash & Pending Litigation</h3>
+                    <p>Following the failure of the moratorium, a community petition titled "Stop the Salix, Iowa Data Center Project" launches, demanding officials pause the project. Amidst the backlash, Mayor Kevin Nelson publicly declines to comment on the ongoing Woodbury County annexation lawsuit, citing pending litigation, while council members publicly dispute the existence of formal zoning applications.</p>
+                    <a href="https://kiwaradio.com/news/despite-protests-salix-leaders-vote-to-proceed-with-data-center-project/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KIWA Radio Report &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Phase 4 -->
             <div class="timeline-item">
                 <div class="timeline-date">August 20, 2026</div>
                 <div class="timeline-content">
                     <h3>City Council Reverses Course on Moratorium</h3>
                     <p>Amid high tension and a heavy police presence to maintain order, the Salix City Council votes 3-2 <strong>against</strong> enacting a one-year moratorium on data center developments. Council Member Denise Burkhart changes her previous July vote in order to allow conversations with Google to continue. The failure of the moratorium allows the data center rezoning process to proceed.</p>
+                    <a href="https://kscj.com/2026/08/21/salix-council-votes-down-data-center-moratorium/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KSCJ 1360 Report &rarr;</a>
                 </div>
             </div>
 
@@ -163,7 +119,8 @@
                 <div class="timeline-date">August 12, 2026</div>
                 <div class="timeline-content">
                     <h3>Threats Force Meeting Postponement</h3>
-                    <p>A highly anticipated City Council meeting to vote on finalized moratorium language is abruptly postponed. Mayor Kevin Nelson cites death and terroristic threats made against city officials on social media. The Woodbury County Sheriff's Office launches an investigation.</p>
+                    <p>A highly anticipated City Council meeting to vote on finalized moratorium language is abruptly postponed. Mayor Kevin Nelson cites death and terroristic threats made against city officials on social media. The Woodbury County Sheriff's Office launches an investigation. Internal documents later reveal Google representatives had explicitly planned to attend this meeting to begin direct community negotiations.</p>
+                    <a href="https://siouxcityjournal.com/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the Sioux City Journal Report &rarr;</a>
                 </div>
             </div>
 
@@ -172,14 +129,25 @@
                 <div class="timeline-content">
                     <h3>Woodbury County Files Lawsuit Against Salix</h3>
                     <p>Woodbury County and three area landowners officially file legal petitions challenging the city's initial annexation of the 900-acre farmland plot. The county alleges Salix failed to properly notify residents, circumvented state code, and illegally annexed property that does not actually border the city limits.</p>
+                    <a href="https://www.iowapublicradio.org/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the Iowa Public Radio Report &rarr;</a>
                 </div>
             </div>
 
             <div class="timeline-item">
                 <div class="timeline-date">August 3, 2026</div>
                 <div class="timeline-content">
-                    <h3>Google Identified as Potential Developer</h3>
-                    <p>MidAmerican Energy publicly identifies Google as the potential primary customer interested in the site. Google confirms it has reached an agreement to investigate a potential Salix development, but notes no formal rezoning or development applications have been filed yet.</p>
+                    <h3>Internal Google Communications to Mayor Nelson</h3>
+                    <p>An internal document titled "Salix, Iowa data center project [INTERNAL]" originating from Google in Council Bluffs is addressed directly to Mayor Kevin Nelson and the Salix City Council. The letter officially introduces Google, promises water stewardship, and confirms that infrastructure commitments are "baked into our agreement with MidAmerican."</p>
+                    <a href="https://www.siouxlandproud.com/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KCAU-TV Report &rarr;</a>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">July 21, 2026</div>
+                <div class="timeline-content">
+                    <h3>Corporate Proxy Confirmation</h3>
+                    <p>MidAmerican Energy submits a letter to the Salix City Council officially confirming that its affiliate, Midwest Capital Group, Inc., has successfully secured options on the 900-acre annexed property to support the future data center campus.</p>
+                    <a href="https://www.ktiv.com/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KTIV News 4 Report &rarr;</a>
                 </div>
             </div>
 
@@ -188,7 +156,8 @@
                 <div class="timeline-date">July 8, 2026</div>
                 <div class="timeline-content">
                     <h3>Initial Moratorium Drafted</h3>
-                    <p>Facing growing community concerns over water, energy, and infrastructure strain, the Salix City Council votes 3-2 to draft a one-year moratorium on data center developments. The city attorney is tasked with drafting the official language for a final August vote.</p>
+                    <p>Facing growing community concerns over water, energy, and infrastructure strain, the Salix City Council votes 3-2 to draft a one-year moratorium on data center developments. The city attorney is tasked with drafting the official language for a final August vote. <em>(The handling of this meeting's transparency would later trigger a state IPIB investigation).</em></p>
+                    <a href="https://siouxcountyradio.com/radio-iowa/salix-city-council-considers-data-center-moratorium/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the Radio Iowa Report &rarr;</a>
                 </div>
             </div>
 
@@ -197,6 +166,7 @@
                 <div class="timeline-content">
                     <h3>County Acts While Data Center Rumors Swirl</h3>
                     <p>As reports emerge that MidAmerican Energy is evaluating the 900-acre Salix site for a massive potential data center development, the Woodbury County Board of Supervisors unanimously passes its own moratorium on data centers in unincorporated areas of the county in direct response to Salix's maneuvers.</p>
+                    <a href="https://www.kwit.org/podcast/spm-news/2026-06-11/salix-residents-remain-concerned-about-possibility-of-data-center-in-their-town" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the Siouxland Public Media Report &rarr;</a>
                 </div>
             </div>
 
@@ -206,6 +176,7 @@
                 <div class="timeline-content">
                     <h3>Salix Annexes 900 Acres</h3>
                     <p>Following a March notice in the <em>Sergeant Bluff Advocate</em>, the Salix City Council unanimously approves a voluntary annexation petition, officially bringing roughly 900 acres of agricultural farmland into the city's jurisdiction.</p>
+                    <a href="https://www.ktiv.com/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KTIV News 4 Report &rarr;</a>
                 </div>
             </div>
             
@@ -214,5 +185,121 @@
     </main>
 
     <script src="assets/components.js"></script>
+    
+    <!-- Strict Dynamic Bing News RSS (Newest First, Capped at 4, Zero Fallback Data) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const newsContainer = document.getElementById('live-news-feed');
+            const loadingText = document.getElementById('news-loading');
+            const searchInput = document.getElementById('news-search');
+            const searchBtn = document.getElementById('search-btn');
+
+            function renderCards(articles) {
+                newsContainer.innerHTML = '';
+                articles.slice(0, 4).forEach(article => {
+                    const dateStr = article.pubDate.toLocaleDateString('en-US', {
+                        month: 'short', day: 'numeric', year: 'numeric'
+                    });
+
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.style.borderTop = '4px solid var(--accent)';
+                    card.innerHTML = `
+                        <span class="news-date">${dateStr} &bull; ${article.source}</span>
+                        <h3 style="margin-top: 0; font-size: 1.15rem; line-height: 1.4;">${article.title}</h3>
+                        <a href="${article.link}" target="_blank" rel="noopener noreferrer" class="news-link" aria-label="Read full article: ${article.title.replace(/"/g, '&quot;')}">Read Full Article &rarr;</a>
+                    `;
+                    newsContainer.appendChild(card);
+                });
+            }
+
+            async function fetchLiveNews(filterTerm = '') {
+                newsContainer.innerHTML = '';
+                loadingText.style.display = 'block';
+                loadingText.textContent = 'Fetching the latest coverage from Bing News...';
+                newsContainer.appendChild(loadingText);
+
+                // Build query
+                let query = 'Salix Iowa data center';
+                const term = filterTerm.trim();
+                if (term !== '') {
+                    query += ` ${term}`;
+                }
+
+                const bingWebUrl = `https://www.bing.com/news/search?q=${encodeURIComponent(query)}`;
+                const bingRssUrl = `${bingWebUrl}&format=rss`;
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(bingRssUrl)}&_t=${Date.now()}`;
+
+                try {
+                    const res = await fetch(proxyUrl, { cache: "no-store" });
+                    if (!res.ok) throw new Error('Proxy network error');
+                    
+                    const xmlString = await res.text();
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+                    
+                    // Guard against XML parser error documents
+                    if (xmlDoc.getElementsByTagName('parsererror').length > 0) throw new Error('XML parsing failed');
+
+                    const items = xmlDoc.getElementsByTagName('item');
+                    let articles = Array.from(items).map(item => ({
+                        title: item.getElementsByTagName('title')[0]?.textContent || 'Untitled Article',
+                        link: item.getElementsByTagName('link')[0]?.textContent || '#',
+                        pubDate: new Date(item.getElementsByTagName('pubDate')[0]?.textContent || 0),
+                        source: 'Bing News'
+                    })).filter(art => art.pubDate.getTime() > 0);
+
+                    // Sort newest first
+                    articles.sort((a, b) => b.pubDate - a.pubDate);
+
+                    // De-duplicate articles by normalized title
+                    const uniqueArticles = [];
+                    const seenTitles = new Set();
+                    for (const art of articles) {
+                        const normalized = art.title.trim().toLowerCase();
+                        if (!seenTitles.has(normalized)) {
+                            seenTitles.add(normalized);
+                            uniqueArticles.push(art);
+                        }
+                    }
+
+                    if (uniqueArticles.length > 0) {
+                        renderCards(uniqueArticles);
+                    } else {
+                        // Dynamic Empty State: Provide direct clickable live link
+                        newsContainer.innerHTML = `
+                            <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px;">
+                                <p class="loading-text" style="margin-bottom: 0.75rem;">No live articles found matching "<strong>${filterTerm}</strong>".</p>
+                                <a href="${bingWebUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); font-weight: 600; text-decoration: underline;">Open live Bing News search directly &rarr;</a>
+                            </div>
+                        `;
+                    }
+
+                } catch (err) {
+                    console.error('Bing fetch error:', err);
+                    // Network / Proxy Failure State: Direct clickable link to Bing
+                    newsContainer.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px;">
+                            <p class="loading-text" style="margin-bottom: 0.75rem;">Live news preview is temporarily unreachable.</p>
+                            <a href="${bingWebUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); font-weight: 600; text-decoration: underline;">View live Salix data center coverage on Bing News &rarr;</a>
+                        </div>
+                    `;
+                }
+            }
+
+            // Initial fetch
+            fetchLiveNews();
+
+            // Button trigger
+            searchBtn.addEventListener('click', () => fetchLiveNews(searchInput.value));
+
+            // Enter key trigger
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    fetchLiveNews(searchInput.value);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
