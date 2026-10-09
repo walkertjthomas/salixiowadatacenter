@@ -25,6 +25,7 @@
 
     <link rel="stylesheet" href="assets/main.css?v=3">
     <script src="assets/nav.js"></script>
+    <script src="assets/loader.js"></script>
 
     <!-- In-page styles for the news and search components -->
     <style>
@@ -112,266 +113,23 @@
         <hr>
 
         <!-- ==========================================
-             2. INFORMATION & FOOTPRINT SECTION
+             2. INFORMATION SECTION (Loaded Dynamically)
              ========================================== -->
-        <section id="information">
-            <h1>Project Information & Footprint</h1>
-            
-            <div class="callout" style="border-left-color: #f59e0b; background-color: rgba(245, 158, 11, 0.1);">
-                <h2 style="color: #d97706;">Awaiting Verified Information</h2>
-                <p>The current promotional website for the project (<a href="https://www.salix-data-center.com/" target="_blank" style="color: #d97706; text-decoration: underline; font-weight: 600;">salix-data-center.com</a>) relies on generic, vague assurances rather than concrete guarantees. Much of the information provided there is not backed by cited data or firm infrastructural studies.</p>
-            </div>
-
-            <p style="text-align: center; max-width: 600px; margin: 0 auto 3rem auto;">
-                We are actively researching the true infrastructural demands and ecological impact of the proposed data center. Below is a realistic comparison of projected resource demands based on similar regional projects and industry data.
-            </p>
-            
-            <hr>
-
-            <h2>Corporate Pledges vs. Binding Guarantees</h2>
-            <p>The project's promotional materials tout a goal to replenish 120% of the water consumed by 2030. It is crucial to understand that this is a voluntary corporate pledge made by Google; it is not a binding municipal contract. If the facility depletes the Salix aquifer and fails to meet this 2030 target, there are no defined legal penalties, no operational pause triggers, and no community compensation mechanisms.</p>
-            
-            <p>When reviewing these assurances, we must examine Google's documented historical behavior where voluntary pledges lacked strict local enforcement.</p>
-
-            <div class="card-grid" style="margin-bottom: 3rem;">
-                <div class="card">
-                    <h3 style="margin-top: 0;">💨 The "Net Zero" Reversal</h3>
-                    <p style="margin-bottom: 0;">Google officially pledged to achieve net-zero emissions across all operations by 2030; however, the company's own 2024 Environmental Report revealed that their greenhouse gas emissions actually surged by 48 percent over five years. This massive increase was driven directly by new AI data center energy demands, proving that voluntary 2030 targets are easily abandoned when corporate infrastructural priorities shift.</p>
-                </div>
-                <div class="card">
-                    <h3 style="margin-top: 0;">💧 "Trade Secret" Water Data</h3>
-                    <p style="margin-bottom: 0;">While Google promises responsible local water stewardship, their historical actions demonstrate a deep resistance to transparency. In The Dalles, Oregon, Google actively fought public records requests and attempted to classify their massive local water consumption as a corporate "trade secret"; they only released the data after a prolonged legal battle and intense public backlash.</p>
-                </div>
-                <div class="card">
-                    <h3 style="margin-top: 0;">🏢 Phantom Economic Lifelines</h3>
-                    <p style="margin-bottom: 0;">Google frequently uses projections of community prosperity to secure decades of multi-million dollar property tax exemptions from rural towns; yet, once construction concludes, these highly automated facilities operate with a skeletal crew of technicians. Local municipalities are left carrying the heavy infrastructural burden without the legal clawback mechanisms required to recoup lost tax revenue if job promises fall short.</p>
-                </div>
-            </div>
-
-            <hr>
-
-            <h2>Resource Demands & Heritage Impact</h2>
-            
-            <div class="card-grid">
-                <!-- Historic Image Card -->
-                <div class="card" style="grid-column: 1 / -1; border-top: 4px solid #10b981;">
-                    <h3>🌾 Preserving Salix's Agricultural Heritage</h3>
-                    <img src="assets/images/historic00.jpg" alt="Historic postcard of Farmers Elevator, C. & N.W. Depot and Updike Elevator in Salix, Iowa" class="responsive-img" style="width: 100%; max-width: 100%; height: auto; box-sizing: border-box; object-fit: cover; cursor: zoom-in; transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.boxShadow='0 8px 15px -3px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.boxShadow='0 4px 6px -1px rgba(0, 0, 0, 0.1)';" onclick="openLightbox(this)" data-caption="Farmers Elevator, C. & N. W. Depot, and Updike Elevator in Salix, Iowa.">
-                    <p class="image-caption">Farmers Elevator, C. & N. W. Depot, and Updike Elevator in Salix, Iowa.</p>
-                    <p>Salix was platted around 1868 with the arrival of the railroad<sup>[a]</sup>. Our town's history is deeply rooted in the land. When a devastating fire swept through the business district in October 1892, these grain elevators were among the only structures left standing, serving as a testament to our agricultural backbone<sup>[a]</sup>. The proposed 900-acre industrial footprint threatens to pave over this rich farming heritage, trading generational farmland for massive corporate water and power consumption.</p>
-                </div>
-
-                <!-- Water Card -->
-                <div class="card" style="grid-column: 1 / -1; border-top: 4px solid #3b82f6;">
-                    <h3>💧 Water Usage & Logistical Challenges</h3>
-                    <p>Data centers require massive amounts of water for cooling. For context, a similar data center project is proposed in Palo, Iowa, on roughly 500 acres. Public records show this facility is estimated to draw <strong>14 million gallons of water per day</strong> directly from the Cedar River<sup>[b]</sup>.</p>
-                    
-                    <p>To put that staggering volume into perspective, the average day demand for water for the entire city of Sioux City is <strong>13.75 million gallons per day</strong><sup>[c]</sup>.</p>
-                    
-                    <p>The proposed Salix site is nearly double the size at <strong>900 acres</strong><sup>[d]</sup>, suggesting an even higher demand. Furthermore, the Palo facility is located directly on top of a river to support its intensive water needs<sup>[b]</sup>. The Salix site is located miles away from the Missouri River, which creates massive logistical hurdles and severely threatens the local aquifer.</p>
-                </div>
-                
-                <div class="card">
-                    <h3>⚡ Energy Consumption & Hidden Water Costs</h3>
-                    <p>Data centers place an enormous, continuous strain on local power grids. We demand transparency regarding MidAmerican Energy's capacity to serve this 900-acre facility<sup>[d]</sup>. Crucially, the true water footprint is often hidden in these energy demands. The power plants that generate electricity for data centers consume significantly more water to cool their steam turbines than the data center uses on-site for its own cooling<sup>[e]</sup>.</p>
-                </div>
-                
-                <div class="card">
-                    <h3>🔊 Noise Pollution</h3>
-                    <p>Industrial HVAC cooling systems and backup generators run 24/7. We are seeking firm, guaranteed noise mitigation strategies to ensure the facility does not disrupt the quiet, rural character of Siouxland.</p>
-                </div>
-            </div>
-
-            <hr>
-
-            <h2>Sources & References</h2>
-            <ul style="font-size: 0.9rem; color: var(--text-muted); list-style: none; padding-left: 0;">
-                <li style="margin-bottom: 0.5rem;"><strong>[a]</strong> SalixIowa.com. <em>The Story of Salix</em>.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>[b]</strong> Iowa Public Radio (June 2026). <em>Palo City Council advances data center zoning ordinance despite pushback from residents</em>.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>[c]</strong> City of Sioux City, Iowa. <em>Utilities: Water Treatment Overview</em>.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>[d]</strong> Data Center Map. <em>MidAmerican Salix - Sioux City</em>.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>[e]</strong> KETOS (July 2026). <em>Data Center Water Use: Why the Power Plant Uses More</em>.</li>
-            </ul>
-        </section>
+        <section id="information" data-src="information.html"></section>
 
         <hr>
 
         <!-- ==========================================
-             3. NEWS & TIMELINE SECTION
+             3. NEWS SECTION (Loaded Dynamically)
              ========================================== -->
-        <section id="news">
-            <h1>Latest News & Timeline</h1>
-            <p>Track the latest developments, legal challenges, and city council decisions.</p>
-            
-            <hr>
-
-            <h2>Live Community Coverage</h2>
-            <p style="margin-bottom: 1.5rem;"><em>Auto-updating live news coverage regarding the proposed Salix data center footprint.</em></p>
-            
-            <div class="news-controls">
-                <label for="news-search" style="font-weight: 600; color: var(--text-color);">Filter coverage: </label>
-                <input type="text" id="news-search" placeholder="e.g. lawsuit, water, Google, moratorium..." aria-label="Filter news keywords">
-                <button id="search-btn">Filter News</button>
-            </div>
-
-            <!-- Dynamic Bing Feed Container (Strict Dynamic, Capped at 4) -->
-            <div id="live-news-feed" class="card-grid">
-                <p class="loading-text" id="news-loading">Fetching the latest articles from Bing News...</p>
-            </div>
-
-            <hr>
-
-            <h2>The Salix Annexation Timeline</h2>
-            <p>A comprehensive, factual record of the proposed 900-acre data center development, rezoning efforts, and community pushback.</p>
-
-            <div class="timeline">
-                
-                <!-- Phase 5 (Current Investigations) -->
-                <div class="timeline-item">
-                    <div class="timeline-date">September 17, 2026</div>
-                    <div class="timeline-content">
-                        <h3>State Ethics Board Accepts Salix Complaint</h3>
-                        <p>The Iowa Public Information Board (IPIB) formally accepts a complaint filed against the City of Salix, launching an investigation into alleged violations of Iowa's Open Meetings Law. The inquiry centers on transparency failures and the handling of the July 8 City Council meeting minutes.</p>
-                        <a href="https://www.siouxlandproud.com/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KCAU-TV Report &rarr;</a>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">August 21, 2026</div>
-                    <div class="timeline-content">
-                        <h3>Public Backlash & Pending Litigation</h3>
-                        <p>Following the failure of the moratorium, a community petition titled "Stop the Salix, Iowa Data Center Project" launches, demanding officials pause the project. Amidst the backlash, Mayor Kevin Nelson publicly declines to comment on the ongoing Woodbury County annexation lawsuit, citing pending litigation, while council members publicly dispute the existence of formal zoning applications.</p>
-                        <a href="https://kiwaradio.com/news/despite-protests-salix-leaders-vote-to-proceed-with-data-center-project/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KIWA Radio Report &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Phase 4 -->
-                <div class="timeline-item">
-                    <div class="timeline-date">August 20, 2026</div>
-                    <div class="timeline-content">
-                        <h3>City Council Reverses Course on Moratorium</h3>
-                        <p>Amid high tension and a heavy police presence to maintain order, the Salix City Council votes 3-2 <strong>against</strong> enacting a one-year moratorium on data center developments. Council Member Denise Burkhart changes her previous July vote in order to allow conversations with Google to continue. The failure of the moratorium allows the data center rezoning process to proceed.</p>
-                        <a href="https://kscj.com/2026/08/21/salix-council-votes-down-data-center-moratorium/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KSCJ 1360 Report &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Phase 3 -->
-                <div class="timeline-item">
-                    <div class="timeline-date">August 12, 2026</div>
-                    <div class="timeline-content">
-                        <h3>Threats Force Meeting Postponement</h3>
-                        <p>A highly anticipated City Council meeting to vote on finalized moratorium language is abruptly postponed. Mayor Kevin Nelson cites death and terroristic threats made against city officials on social media. The Woodbury County Sheriff's Office launches an investigation. Internal documents later reveal Google representatives had explicitly planned to attend this meeting to begin direct community negotiations.</p>
-                        <a href="https://siouxcityjournal.com/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the Sioux City Journal Report &rarr;</a>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">August 6, 2026</div>
-                    <div class="timeline-content">
-                        <h3>Woodbury County Files Lawsuit Against Salix</h3>
-                        <p>Woodbury County and three area landowners officially file legal petitions challenging the city's initial annexation of the 900-acre farmland plot. The county alleges Salix failed to properly notify residents, circumvented state code, and illegally annexed property that does not actually border the city limits.</p>
-                        <a href="https://www.iowapublicradio.org/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the Iowa Public Radio Report &rarr;</a>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">August 3, 2026</div>
-                    <div class="timeline-content">
-                        <h3>Internal Google Communications to Mayor Nelson</h3>
-                        <p>An internal document titled "Salix, Iowa data center project [INTERNAL]" originating from Google in Council Bluffs is addressed directly to Mayor Kevin Nelson and the Salix City Council. The letter officially introduces Google, promises water stewardship, and confirms that infrastructure commitments are "baked into our agreement with MidAmerican."</p>
-                        <a href="https://www.siouxlandproud.com/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KCAU-TV Report &rarr;</a>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">July 21, 2026</div>
-                    <div class="timeline-content">
-                        <h3>Corporate Proxy Confirmation</h3>
-                        <p>MidAmerican Energy submits a letter to the Salix City Council officially confirming that its affiliate, Midwest Capital Group, Inc., has successfully secured options on the 900-acre annexed property to support the future data center campus.</p>
-                        <a href="https://www.ktiv.com/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KTIV News 4 Report &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Phase 2 -->
-                <div class="timeline-item">
-                    <div class="timeline-date">July 8, 2026</div>
-                    <div class="timeline-content">
-                        <h3>Initial Moratorium Drafted</h3>
-                        <p>Facing growing community concerns over water, energy, and infrastructure strain, the Salix City Council votes 3-2 to draft a one-year moratorium on data center developments. The city attorney is tasked with drafting the official language for a final August vote. <em>(The handling of this meeting's transparency would later trigger a state IPIB investigation).</em></p>
-                        <a href="https://siouxcountyradio.com/radio-iowa/salix-city-council-considers-data-center-moratorium/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the Radio Iowa Report &rarr;</a>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">June 2026</div>
-                    <div class="timeline-content">
-                        <h3>County Acts While Data Center Rumors Swirl</h3>
-                        <p>As reports emerge that MidAmerican Energy is evaluating the 900-acre Salix site for a massive potential data center development, the Woodbury County Board of Supervisors unanimously passes its own moratorium on data centers in unincorporated areas of the county in direct response to Salix's maneuvers.</p>
-                        <a href="https://www.kwit.org/podcast/spm-news/2026-06-11/salix-residents-remain-concerned-about-possibility-of-data-center-in-their-town" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the Siouxland Public Media Report &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Phase 1 -->
-                <div class="timeline-item">
-                    <div class="timeline-date">April 8, 2026</div>
-                    <div class="timeline-content">
-                        <h3>Salix Annexes 900 Acres</h3>
-                        <p>Following a March notice in the <em>Sergeant Bluff Advocate</em>, the Salix City Council unanimously approves a voluntary annexation petition, officially bringing roughly 900 acres of agricultural farmland into the city's jurisdiction.</p>
-                        <a href="https://www.ktiv.com/" target="_blank" rel="noopener noreferrer" class="news-link" style="font-size: 0.9rem;">Read the KTIV News 4 Report &rarr;</a>
-                    </div>
-                </div>
-                
-            </div>
-        </section>
+        <section id="news" data-src="news.html"></section>
 
         <hr>
 
         <!-- ==========================================
-             4. COMMUNITY ACTION SECTION
+             4. COMMUNITY SECTION (Loaded Dynamically)
              ========================================== -->
-        <section id="community">
-            <h1>Community Action</h1>
-            <p style="text-align: center; max-width: 600px; margin: 0 auto;">
-                Siouxland deserves transparency. Here is how you can get involved and ensure our community's voice is heard.
-            </p>
-
-            <div class="action-container">
-                <div class="action-row">
-                    <a href="mailto:salixcity@salix.net" class="action-btn btn-city">Email Salix Council</a>
-                    <a href="mailto:supervisors@woodburycountyiowa.gov" class="action-btn btn-county">Email County Supervisors</a>
-                </div>
-                <div class="action-row">
-                    <a href="https://www.change.org" target="_blank" rel="noopener noreferrer" class="action-btn btn-petition">Sign the Petition</a>
-                    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="action-btn btn-fb">Community Forums</a>
-                </div>
-            </div>
-
-            <hr>
-
-            <h2>Upcoming Public Meetings</h2>
-            <p>Make your voice heard. If you wish to speak at a meeting, please contact the respective council or board ahead of time to be placed on the agenda.</p>
-
-            <div class="card-grid">
-                <div class="card">
-                    <h3>🏛️ Salix City Council</h3>
-                    <span class="contact-role">Monthly Regular Meeting</span>
-                    <p>Held on the <strong>second Wednesday</strong> of each month at 7:00 PM at Salix City Hall (317 Tipton St).</p>
-                    <a href="mailto:salixcity@salix.net" class="contact-link">Contact City Hall for Agenda Request &rarr;</a>
-                </div>
-
-                <div class="card">
-                    <h3>⚖️ Woodbury County Supervisors</h3>
-                    <span class="contact-role">Weekly Board Session</span>
-                    <p>Held every <strong>Tuesday afternoon</strong> at 4:30 PM in the basement boardroom of the Woodbury County Courthouse in Sioux City.</p>
-                    <a href="https://www.woodburycountyiowa.gov" target="_blank" rel="noopener noreferrer" class="contact-link">Visit Board Portal & Public Agendas &rarr;</a>
-                </div>
-            </div>
-
-            <div class="video-inset" style="margin-top: 2rem;">
-                <p style="margin: 0; font-weight: 600;">📹 Public Meeting Transparency</p>
-                <span style="font-size: 0.95rem; display: block; margin-top: 0.25rem;">Meeting minutes and available video archives can be requested through open records requests filed under Iowa Code Chapter 22.</span>
-            </div>
-        </section>
+        <section id="community" data-src="community.html"></section>
 
     </main>
 
@@ -382,7 +140,7 @@
         <div class="lightbox-caption" id="lightbox-caption-text"></div>
     </div>
 
-    <!-- Lightbox Script (Handles both data-caption attributes and sibling .image-caption elements) -->
+    <!-- Lightbox Script -->
     <script>
         function openLightbox(imgElement) {
             const lightbox = document.getElementById('image-lightbox');
@@ -408,13 +166,16 @@
         }
     </script>
 
-    <!-- Strict Dynamic Bing News RSS Script (/get JSON wrapper, Newest First, Capped at 4) -->
+    <!-- Strict Dynamic Bing News RSS Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // Listens for the custom event fired by loader.js instead of DOMContentLoaded
+        document.addEventListener('SectionsLoaded', () => {
             const newsContainer = document.getElementById('live-news-feed');
             const loadingText = document.getElementById('news-loading');
             const searchInput = document.getElementById('news-search');
             const searchBtn = document.getElementById('search-btn');
+
+            if (!newsContainer) return; // Failsafe in case news.html fails to load
 
             function renderCards(articles) {
                 newsContainer.innerHTML = '';
