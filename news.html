@@ -186,7 +186,7 @@
 
     <script src="assets/components.js"></script>
     
-    <!-- Strict Dynamic Bing News RSS (Newest First, Capped at 4, Zero Fallback Data) -->
+    <!-- Strict Dynamic Bing News RSS (/get JSON wrapper, Newest First, Capped at 4) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const newsContainer = document.getElementById('live-news-feed');
@@ -219,7 +219,7 @@
                 loadingText.textContent = 'Fetching the latest coverage from Bing News...';
                 newsContainer.appendChild(loadingText);
 
-                // Build query
+                // Build clean search query
                 let query = 'Salix Iowa data center';
                 const term = filterTerm.trim();
                 if (term !== '') {
@@ -228,13 +228,18 @@
 
                 const bingWebUrl = `https://www.bing.com/news/search?q=${encodeURIComponent(query)}`;
                 const bingRssUrl = `${bingWebUrl}&format=rss`;
-                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(bingRssUrl)}&_t=${Date.now()}`;
+                
+                // Use /get endpoint to safely wrap the XML payload into JSON and avoid 500 drops
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(bingRssUrl)}&_t=${Date.now()}`;
 
                 try {
                     const res = await fetch(proxyUrl, { cache: "no-store" });
                     if (!res.ok) throw new Error('Proxy network error');
                     
-                    const xmlString = await res.text();
+                    const data = await res.json();
+                    const xmlString = data.contents;
+                    if (!xmlString) throw new Error('Empty payload returned from proxy');
+
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
                     
